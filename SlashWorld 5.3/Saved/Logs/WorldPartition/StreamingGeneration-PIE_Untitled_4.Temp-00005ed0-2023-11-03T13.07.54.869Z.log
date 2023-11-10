@@ -1,0 +1,46 @@
+[+] Containers:
+ |- [+] Container: /Temp/Untitled_4
+ |   |- [+] ActorDescs:
+ |   |   |- Guid:25183AB146E60E512988A79C9E4B2128 BaseClass: NativeClass:/Script/Engine.WorldDataLayers Name:WorldDataLayers Label:None SpatiallyLoaded:0 Bounds:Invalid RuntimeGrid:None EditorOnly:0 RuntimeOnly:0 HLODRelevant:0 ListedInSceneOutliner:1 IsMainWorldOnly:1
+ |   |- [+] Clusters:
+ |   |   |- [+] [  0]
+ |   |   |   |- Guid:25183AB146E60E512988A79C9E4B2128 BaseClass: NativeClass:/Script/Engine.WorldDataLayers Name:WorldDataLayers Label:None SpatiallyLoaded:0 Bounds:Invalid RuntimeGrid:None EditorOnly:0 RuntimeOnly:0 HLODRelevant:0 ListedInSceneOutliner:1 IsMainWorldOnly:1
+ |- ContainerInstances:
+ |- [+] MainContainer:
+ |   |-        ID: 00000000000000000000000000000000
+ |   |-  ParentID: 00000000000000000000000000000000
+ |   |-    Bounds: IsValid=false, Min=(X=0.000 Y=0.000 Z=0.000), Max=(X=0.000 Y=0.000 Z=0.000)
+ |   |- Transform: 0.000000,0.000000,0.000000|0.000000,0.000000,-0.000000|1.000000,1.000000,1.000000
+ |   |- Container: /Temp/Untitled_4
+----------------------------------------------------------------------------------------------------------------
+Untitled - Persistent Level
+----------------------------------------------------------------------------------------------------------------
+[+] Content of Untitled Persistent Level
+ |- Always loaded Actor Count: 5 
+ |- Actor Path: /Temp/Untitled_4.Untitled:PersistentLevel.Brush_0
+ |- Actor Package: /Temp/Untitled_4
+ |- Actor Path: /Temp/Untitled_4.Untitled:PersistentLevel.DefaultPhysicsVolume_0
+ |- Actor Package: /Temp/Untitled_4
+ |- Actor Path: /Temp/Untitled_4.Untitled:PersistentLevel.WorldDataLayers
+ |- Actor Package: /Temp/__ExternalActors__/Untitled_4/C/P5/UA0UU0K24Y9P3K0KLEREKY
+ |- Actor Path: /Temp/Untitled_4.Untitled:PersistentLevel.WorldPartitionMiniMap_UAID_BCEE7BD980BCD4B801_1500586777
+ |- Actor Package: /Temp/__ExternalActors__/Untitled_4/0/MZ/8P4RCQ2YKF7MLY46ZAE4G8
+ |- Actor Path: /Temp/Untitled_4.Untitled:PersistentLevel.WorldSettings
+ |- Actor Package: /Temp/Untitled_4
+
+----------------------------------------------------------------------------------------------------------------
+Untitled - Runtime Spatial Hash - Streaming Grid - MainGrid
+----------------------------------------------------------------------------------------------------------------
+            Origin: X=0.000 Y=0.000 Z=0.000
+         Cell Size: 12800
+      World Bounds: IsValid=false, Min=(X=0.000 Y=0.000 Z=0.000), Max=(X=0.000 Y=0.000 Z=0.000)
+     Loading Range: 25600.00
+Block Slow Loading: No
+ ClientOnlyVisible: No
+            Origin: X=0.000 Y=0.000 Z=0.000
+
+[+] Grid Levels: 1
+ |- Level  0: Cell Count    0 | Cell Size   12800 | Actor Count    0 (0.0%)
+
+[+] Content of Grid Level 0
+

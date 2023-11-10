@@ -1,0 +1,15 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "l:\\unreal projects\\slashworld 5.3\\intermediate\\build\\win64\\unrealeditor\\inc\\slashworld\\uht\\item.gen.cpp",
+        "ProvidedModule": "",
+        "PCH": "l:\\unreal projects\\slashworld 5.3\\intermediate\\build\\win64\\x64\\slashworldeditor\\development\\engine\\sharedpch.engine.cpp20.inclorderunreal5_0.h.pch",
+        "Includes": [
+            "l:\\unreal projects\\slashworld 5.3\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\slashworld\\definitions.slashworld.h",
+            "l:\\unreal projects\\slashworld 5.3\\source\\slashworld\\public\\items\\item.h",
+            "l:\\unreal projects\\slashworld 5.3\\intermediate\\build\\win64\\unrealeditor\\inc\\slashworld\\uht\\item.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

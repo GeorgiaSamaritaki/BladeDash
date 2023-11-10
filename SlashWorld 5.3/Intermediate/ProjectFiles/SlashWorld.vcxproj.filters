@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\SlashWorld.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{F31BBDD1-B3E8-3BCC-9652-680E16935819}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\SlashWorld.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\SlashWorldEditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\.vsconfig" />
+    <Filter Include="Config">
+      <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultInput.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <Filter Include="Source\SlashWorld">
+      <UniqueIdentifier>{6D94BBAF-C5DA-3138-9A58-84C3FE383F0E}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\SlashWorld\SlashWorld.Build.cs">
+      <Filter>Source\SlashWorld</Filter>
+    </None>
+    <ClInclude Include="..\..\Source\SlashWorld\SlashWorld.h">
+      <Filter>Source\SlashWorld</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\SlashWorld\SlashWorld.cpp">
+      <Filter>Source\SlashWorld</Filter>
+    </ClCompile>
+    <Filter Include="Source\SlashWorld\Public">
+      <UniqueIdentifier>{3906A10D-F172-3C94-850E-2A25EB0F171C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\SlashWorld\Public\Items">
+      <UniqueIdentifier>{6F0CD083-5CFE-300D-B00A-0278565A19EB}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\SlashWorld\Public\Items\Item.h">
+      <Filter>Source\SlashWorld\Public\Items</Filter>
+    </ClInclude>
+    <Filter Include="Source\SlashWorld\Private">
+      <UniqueIdentifier>{3BEE9AF2-744B-30AE-8410-7DC910AAA776}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\SlashWorld\Private\Items">
+      <UniqueIdentifier>{4F391B15-1252-38A9-9BEF-B9DBDF65AAD2}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\SlashWorld\Private\Items\Item.cpp">
+      <Filter>Source\SlashWorld\Private\Items</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source\SlashWorld\Tools">
+      <UniqueIdentifier>{3cf2a49b-aa5d-4691-ac74-5f6cc37ffa44}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="helper.cpp">
+      <Filter>Source\SlashWorld\Tools</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Source\SlashWorld\DebugMacros.h">
+      <Filter>Source\SlashWorld</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
