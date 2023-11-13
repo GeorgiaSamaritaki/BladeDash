@@ -1,8 +1,0 @@
-{
-	"SourceFiles": [
-		"L:\\Unreal Projects\\SlashWorld 5.3\\Source\\SlashWorld\\SlashWorld.Build.cs",
-		"L:\\Unreal Projects\\SlashWorld 5.3\\Source\\SlashWorld.Target.cs",
-		"L:\\Unreal Projects\\SlashWorld 5.3\\Source\\SlashWorldEditor.Target.cs"
-	],
-	"EngineVersion": "5.3.1"
-}
