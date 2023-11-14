@@ -27,7 +27,7 @@ class ACreature : public APawn{
 	class UCapsuleComponent* Capsule;
 };
 
-#66
+# 66
 //Passing a Bind Axis to a pawn
 
 void ABird::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -36,3 +36,4 @@ void ABird::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAxis(FName("MoveForward"), this, &ABird::MoveForward);
 }
 
+## Enhanced input - Youtube Videos
