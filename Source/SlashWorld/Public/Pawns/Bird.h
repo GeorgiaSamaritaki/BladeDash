@@ -1,10 +1,11 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
-#include "Bird.generated.h"
+#include "Bird.generated.h" 
+
+class UCapsuleComponent;
+class USkeletalMeshComponent;
 
 UCLASS()
 class SLASHWORLD_API ABird : public APawn
@@ -21,5 +22,13 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	void MoveForward(float Value);
+
+private:
+	UPROPERTY(VisibleAnywhere)
+	UCapsuleComponent* Capsule;
+
+	UPROPERTY(VisibleAnywhere)
+	USkeletalMeshComponent* BirdMesh;
 
 };
