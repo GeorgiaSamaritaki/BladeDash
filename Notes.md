@@ -2,22 +2,24 @@ AddActorWorldRotation(FRotator(0.f, RotationRate * DeltaTime, 0.f));
 UE_LOG(LogTemp, Warning, TEXT("%f"), value);
 
 # 61
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sine Parameters")
-	float Amplitude = 0.25f;
+EditAnywhere -> Details panel
+Blueprint -> In the blueprint schematics
+BlueprintPure -> Doesnt have an execution node, good for functions that dont require input (Getters are pure)
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sine Parameters")
-	float TimeConstant = 5.f;
+UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sine Parameters")
+float Amplitude = 0.25f;
 
-	UPROPERTY(EditBlueprint, BlueprintReadWrite) 
-    float RotationRate = 0.25f;
+UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sine Parameters")
+float TimeConstant = 5.f;
 
-	UFUNCTION(BlueprintRead) 
-	float TransformedSin();
+UPROPERTY(EditBlueprint, BlueprintReadWrite) 
+float RotationRate = 0.25f;
 
-	UFUNCTION(BlueprintPure)
-	float TransformedCos();
+UFUNCTION(BlueprintRead) 
+float TransformedSin();
 
-
+UFUNCTION(BlueprintPure)
+float TransformedCos();
 
 
 # 63
@@ -37,3 +39,11 @@ void ABird::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 }
 
 ## Enhanced input - Youtube Videos
+Engine -> Input -> Default classes 
+To add a module go to .Build.cs, to clean and reload the editor close editor, delete "Intermediate", "Saved" and "Binaries", 
+right click on project "generate vs project files", rebuild "yes", open project and solution (there is also a refresh visual studio button in tools)
+
+
+Old way (SetupPlayerInputComponent)
+PlayerInputComponent->BindAxis(FName("MoveForward"), this, &ABird::MoveForward);
+
