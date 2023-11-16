@@ -3,6 +3,10 @@
 #include "Components/CapsuleComponent.h "
 #include "Components/SkeletalMeshComponent.h "
 #include "Components/InputComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
+
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 
@@ -18,7 +22,15 @@ ABird::ABird() {
 	BirdMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("BirdMesh"));
 	BirdMesh->SetupAttachment(GetRootComponent());
 
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
+	SpringArm->SetupAttachment(GetRootComponent());
+	SpringArm->TargetArmLength = 300.f;
+
+	ViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("ViewCamera"));
+	ViewCamera->SetupAttachment(SpringArm);
+
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
+
 }
 
 void ABird::BeginPlay() {
@@ -44,11 +56,9 @@ void ABird::MoveForward(float Value) {
 }
 
 void ABird::Move(const FInputActionValue& Value) {
-	const bool DirectionValue = Value.Get<float>();
+	const float DirectionValue = Value.Get<float>();
 
-	if (DirectionValue) UE_LOG(LogTemp, Warning, TEXT("IA_Move trigerred"));
-
-	if (GetController() && (DirectionValue != 0.f)) {
+	if (Controller && (DirectionValue != 0.f)) {
 		FVector Forward = GetActorForwardVector();
 		AddMovementInput(Forward, DirectionValue);
 	}

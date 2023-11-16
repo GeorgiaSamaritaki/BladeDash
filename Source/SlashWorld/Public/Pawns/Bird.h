@@ -9,6 +9,8 @@ class UCapsuleComponent;
 class USkeletalMeshComponent;
 class UInputMappingContext;
 class UInputAction;
+class USpringArmComponent;
+class UCameraComponent;
 
 UCLASS()
 class SLASHWORLD_API ABird : public APawn {
@@ -42,4 +44,9 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	USkeletalMeshComponent* BirdMesh;
 
+	UPROPERTY(VisibleAnywhere)
+	USpringArmComponent* SpringArm;
+
+	UPROPERTY(VisibleAnywhere)
+	UCameraComponent* ViewCamera;
 };

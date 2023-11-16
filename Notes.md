@@ -47,3 +47,4 @@ right click on project "generate vs project files", rebuild "yes", open project 
 Old way (SetupPlayerInputComponent)
 PlayerInputComponent->BindAxis(FName("MoveForward"), this, &ABird::MoveForward);
 
+to view debug: showdebug enhancedinput
