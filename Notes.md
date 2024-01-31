@@ -48,3 +48,20 @@ Old way (SetupPlayerInputComponent)
 PlayerInputComponent->BindAxis(FName("MoveForward"), this, &ABird::MoveForward);
 
 to view debug: showdebug enhancedinput
+
+# 79 
+//Declares the spring arm component and attaches it to the root component
+	CameraBoom = CreateDefaultSubobject < USpringArmComponent>(TEXT("CameraBoom"));
+	CameraBoom->SetupAttachment(GetRootComponent());
+	// Sets the length of the arm
+	CameraBoom->TargetArmLength = 300.f;
+
+	//Makes the Spring arm rorate with the Look() function
+	CameraBoom->bUsePawnControlRotation = true;
+
+	ViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("ViewCamera"));
+	ViewCamera->SetupAttachment(CameraBoom);
+
+	//Stops the camera from rotating with the controller. Only the spring arm.
+	ViewCamera->bUsePawnControlRotation = false;
+

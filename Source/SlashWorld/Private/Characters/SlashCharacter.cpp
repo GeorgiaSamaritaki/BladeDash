@@ -9,6 +9,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GroomComponent.h"
+
 
 ASlashCharacter::ASlashCharacter() {
 	PrimaryActorTick.bCanEverTick = true;
@@ -35,6 +37,16 @@ ASlashCharacter::ASlashCharacter() {
 
 	//Stops the camera from rotating with the controller. Only the spring arm.
 	ViewCamera->bUsePawnControlRotation = false;
+
+	Hair = CreateDefaultSubobject<UGroomComponent>(TEXT("Hair"));
+	Hair->SetupAttachment(GetMesh());
+	Hair->AttachmentName = FString("head");
+
+	Eyebrows = CreateDefaultSubobject<UGroomComponent>(TEXT("Eyebrows"));
+	Eyebrows->SetupAttachment(GetMesh());
+	Eyebrows->AttachmentName = FString("head");
+
+
 }
 
 void ASlashCharacter::BeginPlay() {
