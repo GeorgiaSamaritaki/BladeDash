@@ -73,4 +73,12 @@ Plugins/*/Intermediate/*
 # Cache files for the editor to use
 DerivedDataCache/*
 
-Content/
+Content/EchoContent
+
+Content/AnimalVarietyPack/
+
+Content/DreamscapeSeries/
+
+Content/MedievalDungeon/
+
+Content/StarterContent/
