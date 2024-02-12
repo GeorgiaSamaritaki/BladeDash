@@ -66,4 +66,12 @@ to view debug: showdebug enhancedinput
 	ViewCamera->bUsePawnControlRotation = false;
 
 # 86 
-Using Enhanced input actions
+- Using Enhanced input actions
+- State machines for Animations
+
+![State machine](Screenshots/86.png)
+
+
+# 87
+- Inverse Kinematics in Animations
+![Control rig](Screenshots/87.png)
