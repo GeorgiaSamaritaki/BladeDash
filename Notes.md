@@ -65,3 +65,5 @@ to view debug: showdebug enhancedinput
 	//Stops the camera from rotating with the controller. Only the spring arm.
 	ViewCamera->bUsePawnControlRotation = false;
 
+# 86 
+Using Enhanced input actions

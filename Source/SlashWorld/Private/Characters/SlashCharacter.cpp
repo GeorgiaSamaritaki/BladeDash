@@ -72,10 +72,18 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent)) {
 		EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Look);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Jump);
+		EnhancedInputComponent->BindAction(EKeyAction, ETriggerEvent::Triggered, this, &ASlashCharacter::EKeyPressed);
+		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Attack);
+		EnhancedInputComponent->BindAction(DodgeAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Dodge);
 	}
 
+}
 
-	//PlayerInputComponent->BindAxis(FName("MoveForward"), this, &ASlashCharacter::MoveForward);
+void ASlashCharacter::Jump() {
+	//if (IsUnoccupied()) { 
+	Super::Jump();
+	//}
 }
 
 void ASlashCharacter::Move(const FInputActionValue& Value) {
@@ -105,6 +113,15 @@ void ASlashCharacter::Look(const FInputActionValue& Value) {
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
 
+}
+
+void ASlashCharacter::EKeyPressed() {
+}
+
+void ASlashCharacter::Attack() {
+}
+
+void ASlashCharacter::Dodge() {
 }
 
 
