@@ -1,5 +1,9 @@
-AddActorWorldRotation(FRotator(0.f, RotationRate * DeltaTime, 0.f));
-UE_LOG(LogTemp, Warning, TEXT("%f"), value);
+# debug printing
+
+int e = Avg<int32>(1, 3);
+UE_LOG(LogTemp, Warning, TEXT("Avg of 1 and 3: %d"), e);
+
+
 
 # 61
 EditAnywhere -> Details panel
@@ -75,3 +79,10 @@ to view debug: showdebug enhancedinput
 # 87
 - Inverse Kinematics in Animations
 ![Control rig](Screenshots/87.png)
+
+# 90
+
+Collisions: Physics and query in objects and pawns
+
+# 92
+Object Delegates and how to use  them in UE5

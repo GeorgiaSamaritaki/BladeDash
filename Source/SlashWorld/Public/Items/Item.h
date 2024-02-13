@@ -4,11 +4,13 @@
 #include "GameFramework/Actor.h"
 #include "Item.generated.h"
 
+class USphereComponent;
+
 UCLASS()
-class SLASHWORLD_API AItem : public AActor{
+class SLASHWORLD_API AItem : public AActor {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	AItem();
 	virtual void Tick(float DeltaTime) override;
 
@@ -22,7 +24,7 @@ protected:
 	float TimeConstant = 5.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    float RotationRate = 0.25f;
+	float RotationRate = 0.25f;
 
 	UFUNCTION(BlueprintPure)
 	float TransformedSin();
@@ -33,6 +35,10 @@ protected:
 	template<typename T>
 	T Avg(T First, T Second);
 
+	UFUNCTION()
+	void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float RunningTime;
@@ -40,9 +46,12 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* ItemMesh;
 
+	UPROPERTY(VisibleAnywhere)
+	USphereComponent* Sphere;
+
 };
 
 template<typename T>
-inline T AItem::Avg(T First, T Second){
+inline T AItem::Avg(T First, T Second) {
 	return (First + Second) / 2;
 }
