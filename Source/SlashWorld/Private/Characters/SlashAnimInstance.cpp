@@ -16,6 +16,8 @@ void USlashAnimInstance::NativeInitializeAnimation() {
 	}
 }
 
+//Compute groundspeed for the animations 
+//Look for Rig blueprints for specifics
 void USlashAnimInstance::NativeUpdateAnimation(float DeltaTime) {
 	Super::NativeUpdateAnimation(DeltaTime);
 
