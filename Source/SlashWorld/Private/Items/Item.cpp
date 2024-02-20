@@ -20,6 +20,7 @@ void AItem::BeginPlay() {
 	Super::BeginPlay();
 
 	Sphere->OnComponentBeginOverlap.AddDynamic(this, &AItem::OnSphereOverlap);
+	Sphere->OnComponentEndOverlap.AddDynamic(this, &AItem::OnSphereEndOverlap);
 }
 
 float AItem::TransformedSin() {
@@ -37,7 +38,15 @@ void AItem::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 	if (GEngine) {
 		GEngine->AddOnScreenDebugMessage(1, 30.f, FColor::Red, OtherActorName);
 	}
+}
 
+void AItem::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) {
+
+	const FString OtherActorName = FString("End overlap") + OtherActor->GetName();
+	if (GEngine) {
+		GEngine->AddOnScreenDebugMessage(1, 30.f, FColor::Red, OtherActorName);
+	}
 }
 
 void AItem::Tick(float DeltaTime) {
