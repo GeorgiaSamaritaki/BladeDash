@@ -10,7 +10,8 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GroomComponent.h"
-
+#include "Items/Item.h"
+#include "Items/Weapons/Weapon.h"
 
 ASlashCharacter::ASlashCharacter() {
 	PrimaryActorTick.bCanEverTick = true;
@@ -117,7 +118,11 @@ void ASlashCharacter::Look(const FInputActionValue& Value) {
 }
 
 void ASlashCharacter::EKeyPressed() {
-
+	AWeapon* OverlappingWeapon = Cast<AWeapon>(OverlappingItem);
+	if (OverlappingWeapon) {
+		OverlappingWeapon->Equip(GetMesh(), FName("RightHandSocket"));
+		CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
+	}
 }
 
 void ASlashCharacter::Attack() {

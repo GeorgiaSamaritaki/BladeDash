@@ -81,8 +81,30 @@ to view debug: showdebug enhancedinput
 ![Control rig](Screenshots/87.png)
 
 # 90
-
 Collisions: Physics and query in objects and pawns
 
+For private variables, meta is needed to edit in blueprint
+UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	float RunningTime;
+
 # 92
-Object Delegates and how to use  them in UE5
+Object Delegates
+
+# 95
+- UFUNCTION() macros need to be removed in inherited classes that overwrite the function
+
+# 97 
+Mixamo.com for animations
+- Retargeting skeletal meshes 
+
+# 100
+inline keyword only works as a suggestion. Ue5 has FORCEINLINE
+
+# 102 
+Enum conventions
+UENUM(BlueprintType)
+enum class ECharacterState : uint8 {
+	ECS_Unequipped UMETA(DisplayName = "Unequipped"),
+	ECS_EquippedOneHandedWeapon UMETA(DisplayName = "Equipped One-Handed Weapon"),
+	ECS_EquippedTwoHandedWeapon UMETA(DisplayName = "Equipped Two-Handed Weapon")
+};

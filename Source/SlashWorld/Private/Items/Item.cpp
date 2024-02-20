@@ -4,6 +4,7 @@
 #include "Items/Item.h"
 #include "SlashWorld/DebugMacros.h"
 #include "Components/SphereComponent.h"
+#include "Characters/SlashCharacter.h"
 
 AItem::AItem() {
 	PrimaryActorTick.bCanEverTick = true;
@@ -38,9 +39,9 @@ float AItem::TransformedCos() {
 void AItem::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
 
-	const FString OtherActorName = OtherActor->GetName();
-	if (GEngine) {
-		GEngine->AddOnScreenDebugMessage(1, 30.f, FColor::Red, OtherActorName);
+	ASlashCharacter* SlashCharacter = Cast<ASlashCharacter>(OtherActor);
+	if (SlashCharacter) {
+		SlashCharacter->SetOverlappingItem(this);
 	}
 }
 
@@ -48,9 +49,9 @@ void AItem::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 void AItem::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) {
 
-	const FString OtherActorName = FString("End overlap") + OtherActor->GetName();
-	if (GEngine) {
-		GEngine->AddOnScreenDebugMessage(1, 30.f, FColor::Red, OtherActorName);
+	ASlashCharacter* SlashCharacter = Cast<ASlashCharacter>(OtherActor);
+	if (SlashCharacter) {
+		SlashCharacter->SetOverlappingItem(nullptr);
 	}
 }
 

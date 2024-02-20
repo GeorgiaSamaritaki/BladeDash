@@ -2,10 +2,9 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
-#include "SlashAnimInstance.generated.h"
-/**
- *
- */
+#include "CharacterTypes.h"
+#include "SlashAnimInstance.generated.h" //has to be the last header included
+
 UCLASS()
 class SLASHWORLD_API USlashAnimInstance : public UAnimInstance {
 	GENERATED_BODY()
@@ -25,4 +24,7 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Category = Movement)
 	bool IsFalling;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Movement|Character State")
+	ECharacterState CharacterState;
 };

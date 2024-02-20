@@ -12,6 +12,8 @@
 UCLASS()
 class SLASHWORLD_API AWeapon : public AItem {
 	GENERATED_BODY()
+public:
+	void Equip(USceneComponent* InParent, FName InSocketName);
 
 protected:
 	virtual void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
