@@ -114,3 +114,7 @@ Animation Graphs and simplifications
 - Linked Anim Graph
 - Blend Poses (Enum)
 
+# 107
+Animation Montages
+- They have slots
+- Slots can be added to ABPs to play 

@@ -12,6 +12,7 @@
 #include "GroomComponent.h"
 #include "Items/Item.h"
 #include "Items/Weapons/Weapon.h"
+#include "Animation/AnimMontage.h"
 
 ASlashCharacter::ASlashCharacter() {
 	PrimaryActorTick.bCanEverTick = true;
@@ -126,6 +127,17 @@ void ASlashCharacter::EKeyPressed() {
 }
 
 void ASlashCharacter::Attack() {
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && AttackMontage) {
+		AnimInstance->Montage_Play(AttackMontage);
+
+		//Pick Animation in Random
+		int32 Selection = FMath::RandRange(0, 1);
+		FName SectionName = Selection ? FName("Attack1") : FName("Attack2");
+
+		AnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
+
+	}
 }
 
 void ASlashCharacter::Dodge() {
