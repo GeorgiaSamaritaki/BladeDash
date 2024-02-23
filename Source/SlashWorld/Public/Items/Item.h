@@ -6,6 +6,11 @@
 
 class USphereComponent;
 
+enum class EItemStates :uint8 {
+	EIS_Hovering,
+	EIS_Equipped
+};
+
 UCLASS()
 class SLASHWORLD_API AItem : public AActor {
 	GENERATED_BODY()
@@ -46,6 +51,8 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UStaticMeshComponent* ItemMesh;
+
+	EItemStates ItemState = EItemStates::EIS_Hovering;
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))

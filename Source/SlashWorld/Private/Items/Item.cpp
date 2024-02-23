@@ -59,5 +59,8 @@ void AItem::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
 	RunningTime += DeltaTime;
 
-	AddActorWorldRotation(FRotator(0.f, RotationRate * DeltaTime, 0.f));
+	if (ItemState == EItemStates::EIS_Hovering) {
+		//Hovering with a sin func
+		AddActorWorldOffset(FVector(0.f, 0.f, TransformedSin()));
+	}
 }
