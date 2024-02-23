@@ -73,22 +73,5 @@ Plugins/*/Intermediate/*
 # Cache files for the editor to use
 DerivedDataCache/*
 
-Content/EchoContent
-
-Content/AnimalVarietyPack/
-
-Content/DreamscapeSeries/
-
-Content/MedievalDungeon/
-
-Content/StarterContent/
-
-Content/MSPresets/
-
-Content/Megascans/
-
-Content/Mixamo/
-
-Content/Blueprints/
 
 Content/
