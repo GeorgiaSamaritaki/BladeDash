@@ -127,20 +127,37 @@ void ASlashCharacter::EKeyPressed() {
 }
 
 void ASlashCharacter::Attack() {
+
+	if (CanAttack()) {
+		PlayAttackMontage();
+		ActionState = EActionState::EAS_Attacking;
+	}
+}
+
+
+void ASlashCharacter::PlayAttackMontage() {
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	if (AnimInstance && AttackMontage) {
 		AnimInstance->Montage_Play(AttackMontage);
 
 		//Pick Animation in Random
-		int32 Selection = FMath::RandRange(0, 1);
-		FName SectionName = Selection ? FName("Attack1") : FName("Attack2");
+		const int32 Selection = FMath::RandRange(0, 1);
+		const FName SectionName = Selection ? FName("Attack1") : FName("Attack2");
 
 		AnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
 
 	}
 }
 
-void ASlashCharacter::Dodge() {
+void ASlashCharacter::AttackEnd() {
+	ActionState = EActionState::EAS_Unoccupied;
+}
+
+bool ASlashCharacter::CanAttack() {
+	return ActionState == EActionState::EAS_Unoccupied &&
+		CharacterState != ECharacterState::ECS_Unequipped;
 }
 
 
+void ASlashCharacter::Dodge() {
+}

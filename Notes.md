@@ -118,3 +118,8 @@ Animation Graphs and simplifications
 Animation Montages
 - They have slots
 - Slots can be added to ABPs to play 
+- Notify when an attack ends and connect to a function
+
+Good practices
+- Refactor when possible
+- Make const the var that are not changed
