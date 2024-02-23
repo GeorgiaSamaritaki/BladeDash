@@ -108,3 +108,9 @@ enum class ECharacterState : uint8 {
 	ECS_EquippedOneHandedWeapon UMETA(DisplayName = "Equipped One-Handed Weapon"),
 	ECS_EquippedTwoHandedWeapon UMETA(DisplayName = "Equipped Two-Handed Weapon")
 };
+
+# 105 
+Animation Graphs and simplifications
+- Linked Anim Graph
+- Blend Poses (Enum)
+
