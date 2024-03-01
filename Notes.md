@@ -139,3 +139,9 @@ Sound cue
 # 116
 Making sockets on skeletal meshes
 Cueing Animation notification to call cpp functions
+
+# 119
+- Edit/Tweak animations using keys 
+
+# 123
+Tracing 

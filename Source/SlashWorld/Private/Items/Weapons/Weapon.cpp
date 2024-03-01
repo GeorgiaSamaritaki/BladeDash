@@ -1,11 +1,28 @@
 
 #include "Items/Weapons/Weapon.h"
 #include "Characters/SlashCharacter.h"
+#include "Kismet/GameplayStatics.h"
+#include "Components/SphereComponent.h"
+#include "Components/BoxComponent.h"
 
+AWeapon::AWeapon() {
+	//Box component for attacking collisions
+	WeaponBox = CreateDefaultSubobject<UBoxComponent>(TEXT("WeaponBox"));
+	WeaponBox->SetupAttachment(GetRootComponent());
+
+}
 
 void AWeapon::Equip(USceneComponent* InParent, FName InSocketName) {
 	AttachMeshToSocket(InParent, InSocketName);
 	ItemState = EItemStates::EIS_Equipped;
+
+	if (EquipSound) {
+		UGameplayStatics::PlaySoundAtLocation(this, EquipSound, GetActorLocation());
+	}
+
+	if (Sphere) {
+		Sphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
 }
 
 void AWeapon::AttachMeshToSocket(USceneComponent* InParent, const FName& InSocketName) {
@@ -17,7 +34,6 @@ void AWeapon::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
 
 	Super::OnSphereOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
-
 
 }
 

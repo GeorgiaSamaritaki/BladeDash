@@ -54,12 +54,14 @@ protected:
 
 	EItemStates ItemState = EItemStates::EIS_Hovering;
 
+	// Collision variable
+	UPROPERTY(VisibleAnywhere)
+	USphereComponent* Sphere;
+
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float RunningTime;
 
-	UPROPERTY(VisibleAnywhere)
-	USphereComponent* Sphere;
 
 
 };
