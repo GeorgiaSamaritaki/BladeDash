@@ -135,3 +135,7 @@ Good practices
 Adding sounds to animations
 Sound cue
 ![Metasound](Screenshots/112.png)
+
+# 116
+Making sockets on skeletal meshes
+Cueing Animation notification to call cpp functions
