@@ -12,7 +12,7 @@ AWeapon::AWeapon() {
 	WeaponBox->SetupAttachment(GetRootComponent());
 
 	//Collision Presets 
-	WeaponBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	WeaponBox->SetCollisionEnabled(ECollisionEnabled::NoCollision); // initially inactive
 	WeaponBox->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 	WeaponBox->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
 

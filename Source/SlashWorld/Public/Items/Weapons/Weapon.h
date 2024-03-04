@@ -52,4 +52,6 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* BoxTraceEnd;
 
+public: // Keep getters and setters separated
+	FORCEINLINE UBoxComponent* GetWeaponBox() const { return WeaponBox; }
 };

@@ -13,6 +13,7 @@
 #include "Items/Item.h"
 #include "Items/Weapons/Weapon.h"
 #include "Animation/AnimMontage.h"
+#include "Components/BoxComponent.h"
 
 ASlashCharacter::ASlashCharacter() {
 	PrimaryActorTick.bCanEverTick = true;
@@ -90,6 +91,15 @@ void ASlashCharacter::Jump() {
 	//}
 }
 
+void ASlashCharacter::SetWeaponCollisionEnabled(ECollisionEnabled::Type CollisionEnabled) {
+	UE_LOG(LogTemp, Warning, TEXT("Set Collision"));
+	if (EquippedWeapon && EquippedWeapon->GetWeaponBox())
+		EquippedWeapon->GetWeaponBox()->SetCollisionEnabled(CollisionEnabled);
+
+	//Could be in weapon so we dont include boxcollision
+}
+
+
 void ASlashCharacter::Move(const FInputActionValue& Value) {
 	if (ActionState != EActionState::EAS_Unoccupied) return;
 
@@ -124,7 +134,7 @@ void ASlashCharacter::Look(const FInputActionValue& Value) {
 
 void ASlashCharacter::EKeyPressed() {
 	AWeapon* OverlappingWeapon = Cast<AWeapon>(OverlappingItem);
-	UE_LOG(LogTemp, Warning, TEXT("E key"));
+
 	if (OverlappingWeapon) {
 
 		OverlappingWeapon->Equip(GetMesh(), FName("RightHandSocket"));
