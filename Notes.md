@@ -96,7 +96,8 @@ UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true
 Object Delegates
 
 # 95
-- UFUNCTION() macros need to be removed in inherited classes that overwrite the function
+- `UFUNCTION()` macros need to be removed in inherited classes that overwrite the function
+- Delegate functions are of `UFUNCTION()`
 
 # 97 
 Mixamo.com for animations
@@ -145,3 +146,6 @@ Cueing Animation notification to call cpp functions
 
 # 123
 Tracing 
+World locations CPP: `GetComponentLocation()` Blueprints: `GetWorldLocation()`
+Relative location: CPP: `GetRelativeLocation()`
+FHitResult 
