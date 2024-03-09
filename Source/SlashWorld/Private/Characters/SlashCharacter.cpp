@@ -92,7 +92,6 @@ void ASlashCharacter::Jump() {
 }
 
 void ASlashCharacter::SetWeaponCollisionEnabled(ECollisionEnabled::Type CollisionEnabled) {
-	UE_LOG(LogTemp, Warning, TEXT("Set Collision"));
 	if (EquippedWeapon && EquippedWeapon->GetWeaponBox())
 		EquippedWeapon->GetWeaponBox()->SetCollisionEnabled(CollisionEnabled);
 
@@ -192,7 +191,7 @@ void ASlashCharacter::PlayAttackMontage() {
 	}
 }
 
-void ASlashCharacter::PlayEquipMontage(FName SectionName) {
+void ASlashCharacter::PlayEquipMontage(const FName& SectionName) {
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 
 	if (AnimInstance && EquipMontage) {

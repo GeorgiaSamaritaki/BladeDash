@@ -4,6 +4,7 @@
 #include "Enemy/Enemy.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "SlashWorld/DebugMacros.h"
 
 AEnemy::AEnemy() {
 	PrimaryActorTick.bCanEverTick = true;
@@ -11,14 +12,23 @@ AEnemy::AEnemy() {
 	GetMesh()->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
 	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Block);
 	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
-	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
 	GetMesh()->SetGenerateOverlapEvents(true);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
 
 }
 
 void AEnemy::BeginPlay() {
 	Super::BeginPlay();
 
+}
+
+void AEnemy::PlayHitReactMontage(const FName& SectionName) {
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+	if (AnimInstance && HitReactMontage) {
+		AnimInstance->Montage_Play(HitReactMontage);
+		AnimInstance->Montage_JumpToSection(SectionName, HitReactMontage);
+	}
 }
 
 void AEnemy::Tick(float DeltaTime) {
@@ -29,5 +39,11 @@ void AEnemy::Tick(float DeltaTime) {
 void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+void AEnemy::GetHit(const FVector& ImpactPoint) {
+	//UE_LOG(LogTemp, Warning, TEXT("Draw Sphere at %s"), *ImpactPoint.ToString());
+	DRAW_SPHERE_COLOR(ImpactPoint, FColor::Orange);
+	PlayHitReactMontage(FName("FromLeft"));
 }
 
