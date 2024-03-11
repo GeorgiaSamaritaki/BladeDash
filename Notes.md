@@ -171,3 +171,11 @@ Sound Attenuation
 # 139
 Visual effets in Cascade and Niagara
 
+# 142 
+Destructibles and how to fracture meshes
+
+# 146
+Blueprint Native events
+When you set a function to also be edited in blueprints but with the ability 
+to be overriden: `UFUNCTION(BlueprintNativeEvent)` this creates another function
+which is the one you overwrite called `funcName_Implementation(args)` (see getHit)

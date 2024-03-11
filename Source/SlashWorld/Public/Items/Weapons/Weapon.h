@@ -39,6 +39,8 @@ protected:
 		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
 		const FHitResult& SweepResult);
 
+	UFUNCTION(BlueprintImplementableEvent) // implementation in blueprints, call in cpp
+		void createFields(const FVector& FieldLocation);
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties");

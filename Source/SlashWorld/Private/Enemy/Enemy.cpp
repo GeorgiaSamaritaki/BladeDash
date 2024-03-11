@@ -43,7 +43,7 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) {
 
 }
 
-void AEnemy::GetHit(const FVector& ImpactPoint) {
+void AEnemy::GetHit_Implementation(const FVector& ImpactPoint) {
 	//UE_LOG(LogTemp, Warning, TEXT("Draw Sphere at %s"), *ImpactPoint.ToString());
 	//DRAW_SPHERE_COLOR(ImpactPoint, FColor::Orange);
 
