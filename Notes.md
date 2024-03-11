@@ -159,8 +159,15 @@ How to use interfaces for Unreal
 # 133 
 Root motion animations
 
-# 134
-Dot product to determine direction of hit
-Unreal uses the left hand rule for the cross product
+# 134 - 137
+For directional hit reactions:
+- Dot product to determine direction of hit
+- Unreal uses the left hand rule for the cross product
+- Using `#include "Kismet/KismetSystemLibrary.h"` to draw vectors
 
-Using `#include "Kismet/KismetSystemLibrary.h"` to draw vectors
+# 138
+Sound Attenuation
+
+# 139
+Visual effets in Cascade and Niagara
+
