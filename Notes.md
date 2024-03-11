@@ -2,6 +2,9 @@
 ```
 int e = Avg<int32>(1, 3);
 UE_LOG(LogTemp, Warning, TEXT("Avg of 1 and 3: %d"), e);
+
+if (GEngine)
+	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, FString::Printf(TEXT("Theta: %f"), Theta));
 ```
 # 61
 EditAnywhere -> Details panel
@@ -155,3 +158,9 @@ How to use interfaces for Unreal
 
 # 133 
 Root motion animations
+
+# 134
+Dot product to determine direction of hit
+Unreal uses the left hand rule for the cross product
+
+Using `#include "Kismet/KismetSystemLibrary.h"` to draw vectors

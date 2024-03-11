@@ -92,8 +92,11 @@ void ASlashCharacter::Jump() {
 }
 
 void ASlashCharacter::SetWeaponCollisionEnabled(ECollisionEnabled::Type CollisionEnabled) {
-	if (EquippedWeapon && EquippedWeapon->GetWeaponBox())
+	if (EquippedWeapon && EquippedWeapon->GetWeaponBox()) {
 		EquippedWeapon->GetWeaponBox()->SetCollisionEnabled(CollisionEnabled);
+		EquippedWeapon->IgnoreActors.Empty();
+	}
+
 
 	//Could be in weapon so we dont include boxcollision
 }
