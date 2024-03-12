@@ -182,3 +182,8 @@ which is the one you overwrite called `funcName_Implementation(args)` (see getHi
 
 # 151
 Instatioting Bluprint objects from cpp
+
+# 152
+Creating different kinds of treasures 
+Niagara Particle Effects 
+

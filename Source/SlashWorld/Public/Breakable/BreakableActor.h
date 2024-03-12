@@ -28,10 +28,14 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	class UCapsuleComponent* Capsule;
 
+	UFUNCTION()
+	void OnBreak(const FChaosBreakEvent& BreakEvent);
+
 private:
-	// To gain accesss to the blueprint of the treasure class
+	// To gain accesss to the blueprints of the treasure class
 	// Wrapper enforces restrictions
 	UPROPERTY(EditAnywhere, Category = "Breakable Properties");
-	TSubclassOf<class ATreasure> TreasureClass;
+	TArray<TSubclassOf<class ATreasure>> TreasureClasses;
 
+	bool bBroken = false;
 };
