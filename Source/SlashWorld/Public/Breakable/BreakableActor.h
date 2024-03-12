@@ -22,8 +22,16 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-private:
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	UGeometryCollectionComponent* GeometryCollection;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	class UCapsuleComponent* Capsule;
+
+private:
+	// To gain accesss to the blueprint of the treasure class
+	// Wrapper enforces restrictions
+	UPROPERTY(EditAnywhere, Category = "Breakable Properties");
+	TSubclassOf<class ATreasure> TreasureClass;
 
 };
