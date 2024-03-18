@@ -190,3 +190,5 @@ Niagara Particle Effects
 # 159
 Variables can be binded to the editor using `UPROPERTY(meta = (BindWidget))` its important
 that the cariable name is exactly the same (see HealthBar.h)
+
+`UPROPERTY()` also makes sure varibles are not initialised with garbage data

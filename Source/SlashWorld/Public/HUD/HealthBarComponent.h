@@ -6,11 +6,17 @@
 #include "Components/WidgetComponent.h"
 #include "HealthBarComponent.generated.h"
 
-/**
- *
- */
+
 UCLASS()
 class SLASHWORLD_API UHealthBarComponent : public UWidgetComponent {
 	GENERATED_BODY()
+
+private:
+	UPROPERTY()
+	class UHealthBar* HealthBarWidget;
+
+public:
+	void SetHealthPercent(float Percent);
+
 
 };
