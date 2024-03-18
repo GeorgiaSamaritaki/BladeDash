@@ -187,3 +187,6 @@ Instatioting Bluprint objects from cpp
 Creating different kinds of treasures 
 Niagara Particle Effects 
 
+# 159
+Variables can be binded to the editor using `UPROPERTY(meta = (BindWidget))` its important
+that the cariable name is exactly the same (see HealthBar.h)
