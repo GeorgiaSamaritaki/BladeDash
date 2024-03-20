@@ -17,7 +17,8 @@ class SLASHWORLD_API AWeapon : public AItem {
 	GENERATED_BODY()
 public:
 	AWeapon();
-	void Equip(USceneComponent* InParent, FName InSocketName);
+	void Equip(USceneComponent* InParent, FName InSocketName, AActor* NewOwner, APawn* NewInstigator);
+	//usually owner and instigator are one and the same but we define thjem
 	void AttachMeshToSocket(USceneComponent* InParent, const FName& InSocketName);
 
 	TArray<AActor*> IgnoreActors;
@@ -56,7 +57,8 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* BoxTraceEnd;
 
-
+	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
+	float Damage = 20;
 
 public: // Keep getters and setters separated
 	FORCEINLINE UBoxComponent* GetWeaponBox() const { return WeaponBox; }

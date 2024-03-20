@@ -192,3 +192,6 @@ Variables can be binded to the editor using `UPROPERTY(meta = (BindWidget))` its
 that the cariable name is exactly the same (see HealthBar.h)
 
 `UPROPERTY()` also makes sure varibles are not initialised with garbage data
+
+# 161
+`"Kismet/GameplayStatics.h"` contains the functions TakeDamage and Apply damage
