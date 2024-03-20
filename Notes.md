@@ -195,3 +195,6 @@ that the cariable name is exactly the same (see HealthBar.h)
 
 # 161
 `"Kismet/GameplayStatics.h"` contains the functions TakeDamage and Apply damage
+
+# 165
+Blueprint Thread Safe update animations (access proxy with  `Property Access`)
