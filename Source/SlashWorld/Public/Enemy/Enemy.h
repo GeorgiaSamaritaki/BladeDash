@@ -11,6 +11,7 @@
 class UAnimMontage;
 class UAttributeComponent;
 class UHealthBarComponent;
+class AAIController;
 
 UCLASS()
 class SLASHWORLD_API AEnemy : public ACharacter, public IHitInterface {
@@ -54,18 +55,34 @@ private:
 	UPROPERTY(EditAnywhere)
 	double CombatRadius = 500.f;
 
+	/* Navigation */
+	UPROPERTY()
+	AAIController* EnemyController;
+
+	//Current Patrol Target
+	UPROPERTY(EditInstanceOnly, Category = "AI Navigation")
+	AActor* PatrolTarget;
+
+	UPROPERTY(EditInstanceOnly, Category = "AI Navigation")
+	TArray<AActor*> PatrolTargets;
+
+	// a little larger than moveto to make sure it triggers
+	UPROPERTY(EditAnywhere)
+	double PatrolRadius = 200.f;
+
 protected:
 	virtual void BeginPlay() override;
 
 	void Die();
 	void PlayRandomDeathMontage();
-	/*
-	* Play Montage Functions
-	*/
-	void PlayHitReactMontage(const FName& SectionName);
+	bool InTargetRange(AActor* Target, double Radius);
 
 	UPROPERTY(BlueprintReadOnly)
 	EDeathPose DeathPose = EDeathPose::EDP_Alive;
+
+	/* Play Montage Functions */
+	void PlayHitReactMontage(const FName& SectionName);
+
 
 public:
 

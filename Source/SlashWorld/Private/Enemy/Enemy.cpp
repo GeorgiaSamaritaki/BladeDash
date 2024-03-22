@@ -4,11 +4,13 @@
 #include "Enemy/Enemy.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "SlashWorld/DebugMacros.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/AttributeComponent.h"
 #include "HUD/HealthBarComponent.h"
+#include "AIController.h"
 
 AEnemy::AEnemy() {
 	PrimaryActorTick.bCanEverTick = true;
@@ -22,12 +24,33 @@ AEnemy::AEnemy() {
 	Attributes = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attributes"));
 	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
 	HealthBarWidget->SetupAttachment(GetRootComponent());
+
+	/* Movement */
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationRoll = false;
+	bUseControllerRotationYaw = false;
 }
 
 void AEnemy::BeginPlay() {
 	Super::BeginPlay();
 	if (HealthBarWidget) HealthBarWidget->SetVisibility(false);
 
+	EnemyController = Cast<AAIController>(GetController());
+
+	if (EnemyController && PatrolTarget) {
+		FAIMoveRequest MoveRequest;
+		MoveRequest.SetGoalActor(PatrolTarget);
+		MoveRequest.SetAcceptanceRadius(15.f);
+		FNavPathSharedPtr NavPath;
+		EnemyController->MoveTo(MoveRequest, &NavPath);
+		TArray<FNavPathPoint>& PathPoints = NavPath->GetPathPoints();
+
+		for (auto& Point : PathPoints) {
+			const FVector& Location = Point.Location;
+			DrawDebugSphere(GetWorld(), Location, 12.f, 12, FColor::Green, false, 10.f);
+		}
+	}
 }
 
 void AEnemy::Die() {
@@ -75,6 +98,13 @@ void AEnemy::PlayRandomDeathMontage() {
 	}
 }
 
+bool AEnemy::InTargetRange(AActor* Target, double Radius) {
+	const double DistanceToTarget = (Target->GetActorLocation() - GetActorLocation()).Size();
+	DRAW_SPHERE_SingleFrame(GetActorLocation());
+	DRAW_SPHERE_SingleFrame(Target->GetActorLocation());
+	return DistanceToTarget <= Radius;
+}
+
 void AEnemy::PlayHitReactMontage(const FName& SectionName) {
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 
@@ -88,13 +118,27 @@ void AEnemy::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
 
 	if (CombatTarget) {
-		const double DistanceToTarget = (CombatTarget->GetActorLocation() - GetActorLocation()).Size();
-		if (DistanceToTarget > CombatRadius) {
+		if (!InTargetRange(CombatTarget, CombatRadius)) {
 			CombatTarget = nullptr;
 			if (HealthBarWidget)
 				HealthBarWidget->SetVisibility(false);
 		}
 	}
+	if (EnemyController && PatrolTarget) {
+		if (InTargetRange(PatrolTarget, PatrolRadius) && PatrolTargets.Num() > 1) {
+
+			const int32 TargetSelection = FMath::RandRange(0, PatrolTargets.Num() - 1);
+			PatrolTarget = PatrolTargets[TargetSelection];
+
+			FAIMoveRequest MoveRequest;
+			MoveRequest.SetGoalActor(PatrolTarget);
+			MoveRequest.SetAcceptanceRadius(15.f);
+			EnemyController->MoveTo(MoveRequest);
+
+		}
+
+	}
+
 }
 
 void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) {

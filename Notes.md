@@ -202,3 +202,8 @@ Blueprint Thread Safe update animations (access proxy with  `Property Access`)
 # 168
 AutopossessAI
 Create and make dynamic nav mesh
+
+# 170
+When setting up AI controllers for enemies, for pathfinding to look accurate
+Character Movement -> Orient Rotation to Movement -> True
+Self -> Use Controller Rotation Yaw -> False
