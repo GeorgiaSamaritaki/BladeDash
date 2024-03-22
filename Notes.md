@@ -198,3 +198,7 @@ that the cariable name is exactly the same (see HealthBar.h)
 
 # 165
 Blueprint Thread Safe update animations (access proxy with  `Property Access`)
+
+# 168
+AutopossessAI
+Create and make dynamic nav mesh
