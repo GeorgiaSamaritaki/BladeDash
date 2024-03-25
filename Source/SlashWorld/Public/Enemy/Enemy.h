@@ -21,6 +21,8 @@ public:
 	AEnemy();
 
 	virtual void Tick(float DeltaTime) override;
+	void CheckPatrolTarget();
+	void CheckCombatTarget();
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	void GetHit_Implementation(const FVector& ImpactPoint) override;
 	void DirectionalHitReact(const FVector& ImpactPoint);
@@ -55,7 +57,9 @@ private:
 	UPROPERTY(EditAnywhere)
 	double CombatRadius = 500.f;
 
-	/* Navigation */
+	/*
+	* Navigation
+	*/
 	UPROPERTY()
 	AAIController* EnemyController;
 
@@ -67,8 +71,18 @@ private:
 	TArray<AActor*> PatrolTargets;
 
 	// a little larger than moveto to make sure it triggers
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "AI Navigation")
 	double PatrolRadius = 200.f;
+
+	FTimerHandle PatrolTimer;
+	void PatrolTimerFinished();
+
+	UPROPERTY(EditAnywhere, Category = "AI Navigation")
+	float WaitMin = 5.f;
+
+	UPROPERTY(EditAnywhere, Category = "AI Navigation")
+	float WaitMax = 10.f;
+
 
 protected:
 	virtual void BeginPlay() override;
@@ -76,11 +90,15 @@ protected:
 	void Die();
 	void PlayRandomDeathMontage();
 	bool InTargetRange(AActor* Target, double Radius);
+	void MoveToTarget(AActor* Target);
+	AActor* ChoosePatrolTarget();
 
 	UPROPERTY(BlueprintReadOnly)
 	EDeathPose DeathPose = EDeathPose::EDP_Alive;
 
-	/* Play Montage Functions */
+	/*
+	* Play Montage Functions
+	*/
 	void PlayHitReactMontage(const FName& SectionName);
 
 

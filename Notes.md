@@ -207,3 +207,7 @@ Create and make dynamic nav mesh
 When setting up AI controllers for enemies, for pathfinding to look accurate
 Character Movement -> Orient Rotation to Movement -> True
 Self -> Use Controller Rotation Yaw -> False
+
+# 173
+Enemy patrolling
+Timer (Timer Handles)
