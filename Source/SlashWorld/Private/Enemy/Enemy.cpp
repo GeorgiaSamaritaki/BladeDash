@@ -5,12 +5,14 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "SlashWorld/DebugMacros.h"
-#include "Kismet/KismetSystemLibrary.h"
-#include "Kismet/GameplayStatics.h"
 #include "Components/AttributeComponent.h"
+#include "Perception/PawnSensingComponent.h"
 #include "HUD/HealthBarComponent.h"
 #include "AIController.h"
+
+#include "Kismet/KismetSystemLibrary.h"
+#include "Kismet/GameplayStatics.h"
+#include "SlashWorld/DebugMacros.h"
 
 AEnemy::AEnemy() {
 	PrimaryActorTick.bCanEverTick = true;
@@ -30,6 +32,12 @@ AEnemy::AEnemy() {
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationRoll = false;
 	bUseControllerRotationYaw = false;
+
+	/* Sensing */
+	SensingPawn = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensing"));
+	SensingPawn->SightRadius = 4000.f;
+	SensingPawn->SetPeripheralVisionAngle(45.f);
+
 }
 
 void AEnemy::BeginPlay() {
@@ -39,6 +47,10 @@ void AEnemy::BeginPlay() {
 	//Casting once to avoid continuous casting
 	EnemyController = Cast<AAIController>(GetController());
 	MoveToTarget(PatrolTarget);
+
+	if (SensingPawn) {
+		SensingPawn->OnSeePawn.AddDynamic(this, &AEnemy::PawnSeen);
+	}
 
 }
 
@@ -51,7 +63,7 @@ void AEnemy::Die() {
 
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	if (HealthBarWidget) HealthBarWidget->SetVisibility(false);
-	SetLifeSpan(3.f);
+	SetLifeSpan(5.f);
 }
 
 void AEnemy::PlayRandomDeathMontage() {
@@ -119,6 +131,23 @@ AActor* AEnemy::ChoosePatrolTarget() {
 	return nullptr;
 }
 
+void AEnemy::PawnSeen(APawn* SeenPawn) {
+	if (EnemyState == EEnemyState::EES_Chasing) return;
+
+	if (SeenPawn->ActorHasTag(FName("SlashCharacter"))) {
+
+		GetWorldTimerManager().ClearTimer(PatrolTimer);
+		GetCharacterMovement()->MaxWalkSpeed = WalkMaxSpeed;
+		CombatTarget = SeenPawn;
+
+		if (EnemyState != EEnemyState::EAS_Attacking) {
+			EnemyState = EEnemyState::EES_Chasing;
+			MoveToTarget(CombatTarget);
+			UE_LOG(LogTemp, Warning, TEXT("Pawn Seeen Chase player"));
+		}
+	}
+}
+
 void AEnemy::PlayHitReactMontage(const FName& SectionName) {
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 
@@ -131,8 +160,11 @@ void AEnemy::PlayHitReactMontage(const FName& SectionName) {
 void AEnemy::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
 
-	CheckCombatTarget();
-	CheckPatrolTarget();
+	// Checks enum to chasing or attacking
+	if (EnemyState > EEnemyState::EES_Patrolling)
+		CheckCombatTarget();
+	else
+		CheckPatrolTarget();
 
 }
 
@@ -140,16 +172,33 @@ void AEnemy::CheckPatrolTarget() {
 	if (InTargetRange(PatrolTarget, PatrolRadius)) {
 
 		PatrolTarget = ChoosePatrolTarget();
-		const float RandomWaitTime = FMath::RandRange(WaitMin, WaitMax);
-		GetWorldTimerManager().SetTimer(PatrolTimer, this, &AEnemy::PatrolTimerFinished, RandomWaitTime);
+		const float WaitTime = FMath::RandRange(WaitMin, WaitMax);
+		GetWorldTimerManager().SetTimer(PatrolTimer, this, &AEnemy::PatrolTimerFinished, WaitTime);
 	}
 }
 
 void AEnemy::CheckCombatTarget() {
 	if (!InTargetRange(CombatTarget, CombatRadius)) {
+		//Outside combat radius, lose interest
 		CombatTarget = nullptr;
 		if (HealthBarWidget)
 			HealthBarWidget->SetVisibility(false);
+
+		EnemyState = EEnemyState::EES_Patrolling;
+		GetCharacterMovement()->MaxWalkSpeed = WalkMinSpeed;
+		MoveToTarget(PatrolTarget);
+
+	} else if (!InTargetRange(CombatTarget, AttackRadius)
+		&& EnemyState != EEnemyState::EES_Chasing) {
+
+		EnemyState = EEnemyState::EES_Chasing;
+		GetCharacterMovement()->MaxWalkSpeed = WalkMaxSpeed;
+		MoveToTarget(CombatTarget);
+
+	} else if (InTargetRange(CombatTarget, AttackRadius)
+		&& EnemyState != EEnemyState::EAS_Attacking) {
+		//Inside attack range, attack character
+		EnemyState = EEnemyState::EAS_Attacking;
 	}
 }
 
@@ -225,6 +274,9 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 	}
 
 	CombatTarget = EventInstigator->GetPawn();
+	EnemyState = EEnemyState::EES_Chasing;
+	GetCharacterMovement()->MaxWalkSpeed = WalkMaxSpeed;
+	MoveToTarget(CombatTarget);
 
 	return DamageAmount;
 }

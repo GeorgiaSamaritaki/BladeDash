@@ -55,12 +55,15 @@ ASlashCharacter::ASlashCharacter() {
 void ASlashCharacter::BeginPlay() {
 	Super::BeginPlay();
 
+	//Enhanced Input Controller
 	if (APlayerController* PlayerController = Cast<APlayerController>(GetController())) {
 		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem< UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
 		if (Subsystem) {
 			Subsystem->AddMappingContext(SlashContext, 0);
 		}
 	}
+
+	Tags.Add(FName("SlashCharacter"));
 
 }
 

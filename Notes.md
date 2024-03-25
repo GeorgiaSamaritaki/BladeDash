@@ -211,3 +211,5 @@ Self -> Use Controller Rotation Yaw -> False
 # 173
 Enemy patrolling
 Timer (Timer Handles)
+Binding delegates to a function requires it to be UFUNCTION
+Actor Tags

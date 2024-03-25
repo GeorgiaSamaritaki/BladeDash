@@ -12,6 +12,7 @@ class UAnimMontage;
 class UAttributeComponent;
 class UHealthBarComponent;
 class AAIController;
+class UPawnSensingComponent;
 
 UCLASS()
 class SLASHWORLD_API AEnemy : public ACharacter, public IHitInterface {
@@ -29,12 +30,18 @@ public:
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
 private:
+	/*
+	* Components
+	*/
 
 	UPROPERTY(VisibleAnywhere)
 	UAttributeComponent* Attributes;
 
 	UPROPERTY(VisibleAnywhere)
 	UHealthBarComponent* HealthBarWidget;
+
+	UPROPERTY(VisibleAnywhere)
+	UPawnSensingComponent* SensingPawn;
 
 	/*
 	* Animation Montages
@@ -56,6 +63,9 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	double CombatRadius = 500.f;
+
+	UPROPERTY(EditAnywhere)
+	double AttackRadius = 200.f;
 
 	/*
 	* Navigation
@@ -83,6 +93,17 @@ private:
 	UPROPERTY(EditAnywhere, Category = "AI Navigation")
 	float WaitMax = 10.f;
 
+	UPROPERTY(EditAnywhere, Category = "AI Navigation")
+	float WalkMinSpeed = 125.f;
+
+	UPROPERTY(EditAnywhere, Category = "AI Navigation")
+	float WalkMaxSpeed = 300.f;
+
+	/*
+	*
+	*/
+
+	EEnemyState EnemyState = EEnemyState::EES_Patrolling;
 
 protected:
 	virtual void BeginPlay() override;
@@ -93,15 +114,17 @@ protected:
 	void MoveToTarget(AActor* Target);
 	AActor* ChoosePatrolTarget();
 
-	UPROPERTY(BlueprintReadOnly)
-	EDeathPose DeathPose = EDeathPose::EDP_Alive;
+	UFUNCTION()
+	void PawnSeen(APawn* SeenPawn);
+
 
 	/*
 	* Play Montage Functions
 	*/
 	void PlayHitReactMontage(const FName& SectionName);
 
-
+	UPROPERTY(BlueprintReadOnly)
+	EDeathPose DeathPose = EDeathPose::EDP_Alive;
 public:
 
 };
