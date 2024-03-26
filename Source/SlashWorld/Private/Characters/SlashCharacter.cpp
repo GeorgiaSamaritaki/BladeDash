@@ -130,9 +130,9 @@ void ASlashCharacter::EKeyPressed() {
 	if (OverlappingWeapon) {
 
 		OverlappingWeapon->Equip(GetMesh(), FName("RightHandSocket"), this, this);
+		OverlappingItem = nullptr;
 		CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
 		EquippedWeapon = OverlappingWeapon;
-		OverlappingItem = nullptr;
 
 	} else if (EquippedWeapon) {
 		if (CanDisarm()) {
@@ -149,6 +149,7 @@ void ASlashCharacter::EKeyPressed() {
 }
 
 void ASlashCharacter::Attack() {
+	Super::Attack();
 
 	if (CanAttack()) {
 		PlayAttackMontage();
@@ -158,6 +159,7 @@ void ASlashCharacter::Attack() {
 
 
 void ASlashCharacter::PlayAttackMontage() {
+	Super::PlayAttackMontage();
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 
 	if (AnimInstance && AttackMontage) {

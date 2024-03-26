@@ -9,6 +9,7 @@
 #include "Perception/PawnSensingComponent.h"
 #include "HUD/HealthBarComponent.h"
 #include "AIController.h"
+#include "Items/Weapons/Weapon.h"
 
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
@@ -48,6 +49,13 @@ void AEnemy::BeginPlay() {
 
 	if (SensingPawn) {
 		SensingPawn->OnSeePawn.AddDynamic(this, &AEnemy::PawnSeen);
+	}
+
+	UWorld* World = GetWorld();
+	if (World) {
+		AWeapon* DefaultWeapon = World->SpawnActor<AWeapon>(WeaponClass);
+		DefaultWeapon->Equip(GetMesh(), FName("RightHandSocket"), this, this);
+		EquippedWeapon = DefaultWeapon;
 	}
 
 }
@@ -115,7 +123,7 @@ void AEnemy::MoveToTarget(AActor* Target) {
 
 	FAIMoveRequest MoveRequest;
 	MoveRequest.SetGoalActor(Target);
-	MoveRequest.SetAcceptanceRadius(15.f);
+	MoveRequest.SetAcceptanceRadius(50.f);
 
 	EnemyController->MoveTo(MoveRequest);
 }
@@ -127,6 +135,39 @@ AActor* AEnemy::ChoosePatrolTarget() {
 	}
 
 	return nullptr;
+}
+
+void AEnemy::Attack() {
+	Super::Attack();
+	PlayAttackMontage();
+}
+
+void AEnemy::PlayAttackMontage() {
+	Super::PlayAttackMontage();
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+	if (AnimInstance && AttackMontage) {
+		AnimInstance->Montage_Play(AttackMontage);
+
+		//Pick Animation in Random
+		const int32 Selection = FMath::RandRange(1, 3);
+		FName SectionName = FName();
+		switch (Selection) {
+		case 1:
+			SectionName = FName("Attack1");
+			break;
+		case 2:
+			SectionName = FName("Attack2");
+			break;
+		case 3:
+			SectionName = FName("Attack3");
+			break;
+		default:
+			break;
+		}
+		AnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
+
+	}
 }
 
 void AEnemy::PawnSeen(APawn* SeenPawn) {
@@ -188,6 +229,7 @@ void AEnemy::CheckCombatTarget() {
 		&& EnemyState != EEnemyState::EAS_Attacking) {
 		//Inside attack range, attack character
 		EnemyState = EEnemyState::EAS_Attacking;
+		Attack();
 	}
 }
 
@@ -228,5 +270,9 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 	MoveToTarget(CombatTarget);
 
 	return DamageAmount;
+}
+
+void AEnemy::Destroyed() {
+	if (EquippedWeapon) EquippedWeapon->Destroy();
 }
 
