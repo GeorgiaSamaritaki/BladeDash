@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 
 #include "Characters/SlashCharacter.h"
 
@@ -93,17 +91,6 @@ void ASlashCharacter::Jump() {
 	Super::Jump();
 	//}
 }
-
-void ASlashCharacter::SetWeaponCollisionEnabled(ECollisionEnabled::Type CollisionEnabled) {
-	if (EquippedWeapon && EquippedWeapon->GetWeaponBox()) {
-		EquippedWeapon->GetWeaponBox()->SetCollisionEnabled(CollisionEnabled);
-		EquippedWeapon->IgnoreActors.Empty();
-	}
-
-
-	//Could be in weapon so we dont include boxcollision
-}
-
 
 void ASlashCharacter::Move(const FInputActionValue& Value) {
 	if (ActionState != EActionState::EAS_Unoccupied) return;
