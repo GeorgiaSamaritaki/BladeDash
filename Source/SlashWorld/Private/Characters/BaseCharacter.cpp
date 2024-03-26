@@ -23,6 +23,11 @@ void ABaseCharacter::Die() {
 }
 
 void ABaseCharacter::PlayAttackMontage() {
+	if (AttackMontageSections.Num() <= 0) return;
+	const int32 MaxSectionIndex = AttackMontageSections.Num() - 1;
+	const int32 Selection = FMath::RandRange(0, MaxSectionIndex);
+
+	PlayMontageSection(AttackMontage, AttackMontageSections[Selection]);
 }
 
 void ABaseCharacter::PlayHitReactMontage(const FName& SectionName) {
@@ -81,6 +86,15 @@ void ABaseCharacter::HandleDamage(float DamageAmount) {
 		Attributes->ReceiveDamage(DamageAmount);
 	}
 }
+
+void ABaseCharacter::PlayMontageSection(UAnimMontage* Montage, const FName& SectionName) {
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && Montage) {
+		AnimInstance->Montage_Play(Montage);
+		AnimInstance->Montage_JumpToSection(SectionName, Montage);
+	}
+}
+
 
 bool ABaseCharacter::CanAttack() {
 	return false;
