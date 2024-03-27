@@ -4,6 +4,7 @@
 #include "Items/Weapons/Weapon.h"
 #include "Components/AttributeComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/CapsuleComponent.h"
 
 ABaseCharacter::ABaseCharacter() {
 	PrimaryActorTick.bCanEverTick = true;
@@ -20,23 +21,6 @@ void ABaseCharacter::Attack() {
 }
 
 void ABaseCharacter::Die() {
-}
-
-void ABaseCharacter::PlayAttackMontage() {
-	if (AttackMontageSections.Num() <= 0) return;
-	const int32 MaxSectionIndex = AttackMontageSections.Num() - 1;
-	const int32 Selection = FMath::RandRange(0, MaxSectionIndex);
-
-	PlayMontageSection(AttackMontage, AttackMontageSections[Selection]);
-}
-
-void ABaseCharacter::PlayHitReactMontage(const FName& SectionName) {
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-
-	if (AnimInstance && HitReactMontage) {
-		AnimInstance->Montage_Play(HitReactMontage);
-		AnimInstance->Montage_JumpToSection(SectionName, HitReactMontage);
-	}
 }
 
 void ABaseCharacter::DirectionalHitReact(const FVector& ImpactPoint) {
@@ -87,6 +71,33 @@ void ABaseCharacter::HandleDamage(float DamageAmount) {
 	}
 }
 
+/*
+*
+* Montages
+*
+*/
+
+int32 ABaseCharacter::PlayAttackMontage() {
+	return PlayRandomMontageSection(AttackMontage, AttackMontageSections);
+}
+
+int32 ABaseCharacter::PlayDeathMontage() {
+	return PlayRandomMontageSection(DeathMontage, DeathMontageSections);
+}
+
+void ABaseCharacter::DisableCapsule() {
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+}
+
+void ABaseCharacter::PlayHitReactMontage(const FName& SectionName) {
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+	if (AnimInstance && HitReactMontage) {
+		AnimInstance->Montage_Play(HitReactMontage);
+		AnimInstance->Montage_JumpToSection(SectionName, HitReactMontage);
+	}
+}
+
 void ABaseCharacter::PlayMontageSection(UAnimMontage* Montage, const FName& SectionName) {
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	if (AnimInstance && Montage) {
@@ -95,6 +106,20 @@ void ABaseCharacter::PlayMontageSection(UAnimMontage* Montage, const FName& Sect
 	}
 }
 
+int32 ABaseCharacter::PlayRandomMontageSection(UAnimMontage* Montage, const TArray<FName>& SectionNames) {
+	if (SectionNames.Num() <= 0) return -1;
+	const int32 MaxSectionIndex = SectionNames.Num() - 1;
+	const int32 Selection = FMath::RandRange(0, MaxSectionIndex);
+
+	PlayMontageSection(Montage, SectionNames[Selection]);
+	return Selection;
+}
+
+/*
+*
+* Helpers
+*
+*/
 
 bool ABaseCharacter::CanAttack() {
 	return false;
@@ -117,8 +142,6 @@ void ABaseCharacter::SetWeaponCollisionEnabled(ECollisionEnabled::Type Collision
 		EquippedWeapon->GetWeaponBox()->SetCollisionEnabled(CollisionEnabled);
 		EquippedWeapon->IgnoreActors.Empty();
 	}
-
-
 	//Could be in weapon so we dont include boxcollision
 }
 

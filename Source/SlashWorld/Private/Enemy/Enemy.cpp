@@ -36,6 +36,7 @@ AEnemy::AEnemy() {
 	SensingPawn->SightRadius = 4000.f;
 	SensingPawn->SetPeripheralVisionAngle(45.f);
 
+	EnemyState = EEnemyState::EES_Patrolling;
 }
 
 
@@ -67,48 +68,13 @@ void AEnemy::PatrolTimerFinished() {
 }
 
 void AEnemy::Die() {
-	PlayRandomDeathMontage();
-
-	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	if (HealthBarWidget) HealthBarWidget->SetVisibility(false);
-	SetLifeSpan(5.f);
-}
-
-void AEnemy::PlayRandomDeathMontage() {
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-
-	if (AnimInstance && DeathMontage) {
-		AnimInstance->Montage_Play(DeathMontage);
-
-		FName SectionName = FName();
-		const int32 Selection = FMath::RandRange(1, 5);
-		switch (Selection) {
-		case 1:
-			SectionName = FName("Death1");
-			DeathPose = EDeathPose::EDP_Dead1;
-			break;
-		case 2:
-			SectionName = FName("Death2");
-			DeathPose = EDeathPose::EDP_Dead2;
-			break;
-		case 3:
-			SectionName = FName("Death3");
-			DeathPose = EDeathPose::EDP_Dead3;
-			break;
-		case 4:
-			SectionName = FName("Death4");
-			DeathPose = EDeathPose::EDP_Dead4;
-			break;
-		case 5:
-			SectionName = FName("Death5");
-			DeathPose = EDeathPose::EDP_Dead5;
-			break;
-		default:
-			break;
-		}
-
-		AnimInstance->Montage_JumpToSection(SectionName, DeathMontage);
-	}
+	EnemyState = EEnemyState::EES_Dead;
+	PlayDeathMontage();
+	ClearAttackTimer();
+	DisableCapsule();
+	HideHealthBar();
+	SetLifeSpan(DeathLifeSpan);
+	GetCharacterMovement()->bOrientRotationToMovement = false;
 }
 
 bool AEnemy::InTargetRange(AActor* Target, double Radius) {
@@ -140,16 +106,23 @@ AActor* AEnemy::ChoosePatrolTarget() {
 }
 
 void AEnemy::Attack() {
+	EnemyState = EEnemyState::EES_Engaged;
 	Super::Attack();
 	PlayAttackMontage();
 }
 
 bool AEnemy::CanAttack() {
 	bool bCanAttack =
-		IsOutsideAttackRadious() &&
+		IsInsideCombatRadious() &&
 		!IsAttacking() &&
+		!IsEngaged() &&
 		!IsDead();
 	return bCanAttack;
+}
+
+void AEnemy::AttackEnd() {
+	EnemyState = EEnemyState::EES_NoState;
+	CheckCombatTarget();
 }
 
 void AEnemy::HandleDamage(float DamageAmount) {
@@ -158,6 +131,15 @@ void AEnemy::HandleDamage(float DamageAmount) {
 	if (Attributes && HealthBarWidget) {
 		HealthBarWidget->SetHealthPercent(Attributes->GetHealthPercent());
 	}
+}
+
+int32 AEnemy::PlayDeathMontage() {
+	const int32 Selection = Super::PlayDeathMontage();
+	TEnumAsByte<EDeathPose> Pose(Selection);
+	if (Pose < EDeathPose::EDP_MAX) {
+		DeathPose = Pose;
+	}
+	return Selection;
 }
 
 void AEnemy::PawnSeen(APawn* SeenPawn) {

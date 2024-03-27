@@ -197,7 +197,7 @@ that the cariable name is exactly the same (see HealthBar.h)
 `"Kismet/GameplayStatics.h"` contains the functions TakeDamage and Apply damage
 
 # 165
-Blueprint Thread Safe update animations (access proxy with  `Property Access`)
+Blueprint Thread Safe Update animations (access proxy with  `Property Access`)
 
 # 168
 AutopossessAI
@@ -217,4 +217,7 @@ Actor Tags
 # 180
 Origin change for weapons + sockets
 
-# 185
+# 186
+Randomly select Montage section by setting an array  with the sections
+![Montage Sections CPP](Screenshots/MontageSectionsCpp.png)
+![Montage Sections Details Panel](Screenshots/MontageSectionsDetails.png)
