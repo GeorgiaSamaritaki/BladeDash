@@ -2,6 +2,7 @@
 #include "Characters/SlashCharacter.h"
 
 #include "Components/InputComponent.h"
+#include "Components/StaticMeshComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -23,9 +24,14 @@ ASlashCharacter::ASlashCharacter() {
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 400.f, 0.f);
 
+	GetMesh()->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
+	GetMesh()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Block);
+	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldDynamic, ECollisionResponse::ECR_Overlap);
+	GetMesh()->SetGenerateOverlapEvents(true);
 
 	//Declares the spring arm component and attaches it to the root component
-	CameraBoom = CreateDefaultSubobject < USpringArmComponent>(TEXT("CameraBoom"));
+	CameraBoom = CreateDefaultSubobject <USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(GetRootComponent());
 	// Sets the length of the arm
 	CameraBoom->TargetArmLength = 300.f;
@@ -46,8 +52,6 @@ ASlashCharacter::ASlashCharacter() {
 	Eyebrows = CreateDefaultSubobject<UGroomComponent>(TEXT("Eyebrows"));
 	Eyebrows->SetupAttachment(GetMesh());
 	Eyebrows->AttachmentName = FString("head");
-
-
 }
 
 void ASlashCharacter::BeginPlay() {
@@ -61,7 +65,7 @@ void ASlashCharacter::BeginPlay() {
 		}
 	}
 
-	Tags.Add(FName("SlashCharacter"));
+	Tags.Add(FName("EngageableTarget"));
 
 }
 
@@ -78,6 +82,11 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Attack);
 		EnhancedInputComponent->BindAction(DodgeAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Dodge);
 	}
+}
+
+void ASlashCharacter::GetHit_Implementation(const FVector& ImpactPoint) {
+	PlayHitSound(ImpactPoint);
+	SpawnHitParticles(ImpactPoint);
 }
 
 void ASlashCharacter::Move(const FInputActionValue& Value) {
