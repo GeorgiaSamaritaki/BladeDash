@@ -14,7 +14,7 @@
 #include "Components/BoxComponent.h"
 
 ASlashCharacter::ASlashCharacter() {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
@@ -65,11 +65,6 @@ void ASlashCharacter::BeginPlay() {
 
 }
 
-void ASlashCharacter::Tick(float DeltaTime) {
-	Super::Tick(DeltaTime);
-
-}
-
 //Inputs are defined with the Enhanced input system (Blueprints/Characters/Input)
 void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
@@ -83,13 +78,6 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Attack);
 		EnhancedInputComponent->BindAction(DodgeAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Dodge);
 	}
-
-}
-
-void ASlashCharacter::Jump() {
-	//if (IsUnoccupied()) { 
-	Super::Jump();
-	//}
 }
 
 void ASlashCharacter::Move(const FInputActionValue& Value) {
@@ -129,23 +117,20 @@ void ASlashCharacter::EKeyPressed() {
 
 	if (OverlappingWeapon) {
 
-		OverlappingWeapon->Equip(GetMesh(), FName("RightHandSocket"), this, this);
-		OverlappingItem = nullptr;
-		CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
-		EquippedWeapon = OverlappingWeapon;
+		EquipWeapon(OverlappingWeapon);
 
 	} else if (EquippedWeapon) {
-		if (CanDisarm()) {
-			PlayEquipMontage(FName("Disarm"));
-			CharacterState = ECharacterState::ECS_Unequipped;
-			ActionState = EActionState::EAS_EquippingWeapon;
-
-		} else if (CanArm()) {
-			PlayEquipMontage(FName("Arm"));
-			CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
-			ActionState = EActionState::EAS_EquippingWeapon;
-		}
+		if (CanDisarm()) Disarm();
+		else if (CanArm()) Arm();
 	}
+}
+
+void ASlashCharacter::Jump() {
+	//if (IsUnoccupied()) { 
+	Super::Jump();
+	//}
+}
+void ASlashCharacter::Dodge() {
 }
 
 void ASlashCharacter::Attack() {
@@ -157,6 +142,17 @@ void ASlashCharacter::Attack() {
 	}
 }
 
+void ASlashCharacter::EquipWeapon(AWeapon* Weapon) {
+	Weapon->Equip(GetMesh(), FName("RightHandSocket"), this, this);
+	OverlappingItem = nullptr;
+	CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
+	EquippedWeapon = Weapon;
+}
+
+void ASlashCharacter::AttackEnd() {
+	ActionState = EActionState::EAS_Unoccupied;
+}
+
 void ASlashCharacter::PlayEquipMontage(const FName& SectionName) {
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 
@@ -164,10 +160,6 @@ void ASlashCharacter::PlayEquipMontage(const FName& SectionName) {
 		AnimInstance->Montage_Play(EquipMontage);
 		AnimInstance->Montage_JumpToSection(SectionName, EquipMontage);
 	}
-}
-
-void ASlashCharacter::AttackEnd() {
-	ActionState = EActionState::EAS_Unoccupied;
 }
 
 bool ASlashCharacter::CanAttack() {
@@ -185,13 +177,25 @@ bool ASlashCharacter::CanArm() {
 		CharacterState == ECharacterState::ECS_Unequipped;
 }
 
+void ASlashCharacter::Arm() {
+	PlayEquipMontage(FName("Arm"));
+	CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
+	ActionState = EActionState::EAS_EquippingWeapon;
+}
+
 void ASlashCharacter::Disarm() {
+	PlayEquipMontage(FName("Disarm"));
+	CharacterState = ECharacterState::ECS_Unequipped;
+	ActionState = EActionState::EAS_EquippingWeapon;
+}
+
+void ASlashCharacter::AttachWeaponToBack() {
 	if (EquippedWeapon) {
 		EquippedWeapon->AttachMeshToSocket(GetMesh(), FName("SpineSocket"));
 	}
 }
 
-void ASlashCharacter::Arm() {
+void ASlashCharacter::AttachWeaponToHand() {
 	if (EquippedWeapon) {
 		EquippedWeapon->AttachMeshToSocket(GetMesh(), FName("RightHandSocket"));
 	}
@@ -201,5 +205,3 @@ void ASlashCharacter::FinishEquipping() {
 	ActionState = EActionState::EAS_Unoccupied;
 }
 
-void ASlashCharacter::Dodge() {
-}

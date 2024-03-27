@@ -21,12 +21,36 @@ class SLASHWORLD_API ASlashCharacter : public ABaseCharacter {
 
 public:
 	ASlashCharacter();
-	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	virtual void Jump() override;
 
 protected:
 	virtual void BeginPlay() override;
+	/** Callbacks for Input */
+	void Move(const FInputActionValue& Value);
+	void Look(const FInputActionValue& Value);
+	void EKeyPressed();
+	virtual void Jump() override;
+	void Dodge();
+	virtual void Attack() override;
+
+	/** Combat */
+	void EquipWeapon(AWeapon* Weapon);
+	virtual void AttackEnd() override;
+	virtual bool CanAttack() override;
+	bool CanDisarm();
+	bool CanArm();
+	void Arm();
+	void Disarm();
+	void PlayEquipMontage(const FName& SectionName);
+
+	UFUNCTION(BlueprintCallable)
+	void AttachWeaponToBack();
+
+	UFUNCTION(BlueprintCallable)
+	void AttachWeaponToHand();
+
+	UFUNCTION(BlueprintCallable)
+	void FinishEquipping();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	UInputMappingContext* SlashContext;
@@ -49,39 +73,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	UInputAction* DodgeAction;
 
-	/*
-	* Callbacks for Input
-	*/
-	void Move(const FInputActionValue& Value);
-	void Look(const FInputActionValue& Value);
-	void EKeyPressed();
-	virtual void Attack() override;
-	void Dodge();
-
-	/*
-	* Play Montage Functions
-	*/
-
-	virtual void AttackEnd() override;
-	virtual bool CanAttack() override;
-
-	void PlayEquipMontage(const FName& SectionName);
-	bool CanDisarm();
-	bool CanArm();
-
-	UFUNCTION(BlueprintCallable)
-	void Disarm();
-	UFUNCTION(BlueprintCallable)
-	void Arm();
-	UFUNCTION(BlueprintCallable)
-	void FinishEquipping();
-
 private:
-	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
-
-	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	EActionState ActionState = EActionState::EAS_Unoccupied;
-
+	/** Character combonents */
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* CameraBoom;
 
@@ -99,11 +92,13 @@ private:
 	UPROPERTY(VisibleInstanceOnly)
 	AItem* OverlappingItem;
 
-	/*
-	* Animation Montages
-	*/
 	UPROPERTY(EditDefaultsOnly, Category = Montages)
 	UAnimMontage* EquipMontage;
+
+	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
+
+	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EActionState ActionState = EActionState::EAS_Unoccupied;
 
 public:
 	FORCEINLINE void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }
