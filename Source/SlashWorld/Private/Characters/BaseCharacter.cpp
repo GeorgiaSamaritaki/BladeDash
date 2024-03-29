@@ -1,6 +1,5 @@
 
 #include "Characters/BaseCharacter.h"
-#include "Components/BoxComponent.h"
 #include "Items/Weapons/Weapon.h"
 #include "Components/AttributeComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -17,15 +16,16 @@ void ABaseCharacter::BeginPlay() {
 
 }
 
-void ABaseCharacter::GetHit_Implementation(const FVector& ImpactPoint) {
+void ABaseCharacter::GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter) {
 	UE_LOG(LogTemp, Warning, TEXT("GetHitCalled"));
-	if (IsAlive())
-		DirectionalHitReact(ImpactPoint);
+	if (IsAlive() && Hitter)
+		DirectionalHitReact(Hitter->K2_GetActorLocation());
 	else
 		Die();
 
 	PlayHitSound(ImpactPoint);
 	SpawnHitParticles(ImpactPoint);
+	SetWeaponCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void ABaseCharacter::Attack() {
@@ -149,10 +149,8 @@ void ABaseCharacter::Tick(float DeltaTime) {
 }
 
 void ABaseCharacter::SetWeaponCollisionEnabled(ECollisionEnabled::Type CollisionEnabled) {
-	if (EquippedWeapon && EquippedWeapon->GetWeaponBox()) {
-		EquippedWeapon->GetWeaponBox()->SetCollisionEnabled(CollisionEnabled);
-		EquippedWeapon->IgnoreActors.Empty();
+	if (EquippedWeapon) {
+		EquippedWeapon->SetCollision(CollisionEnabled);
 	}
-	//Could be in weapon so we dont include boxcollision
 }
 

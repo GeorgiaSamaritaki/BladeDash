@@ -84,9 +84,10 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	}
 }
 
-void ASlashCharacter::GetHit_Implementation(const FVector& ImpactPoint) {
+void ASlashCharacter::GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter) {
+	Super::GetHit_Implementation(ImpactPoint, Hitter);
+
 	ActionState = EActionState::EAS_HitReaction;
-	Super::GetHit_Implementation(ImpactPoint);
 }
 
 void ASlashCharacter::Move(const FInputActionValue& Value) {

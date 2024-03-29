@@ -22,7 +22,7 @@ class SLASHWORLD_API ASlashCharacter : public ABaseCharacter {
 public:
 	ASlashCharacter();
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	void GetHit_Implementation(const FVector& ImpactPoint) override;
+	void GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter) override;
 
 protected:
 	virtual void BeginPlay() override;

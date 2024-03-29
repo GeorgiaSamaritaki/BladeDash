@@ -23,7 +23,7 @@ public:
 	void PlayEquipSound();
 	//usually owner and instigator are one and the same but we define thjem
 	void AttachMeshToSocket(USceneComponent* InParent, const FName& InSocketName);
-
+	void SetCollision(ECollisionEnabled::Type CollisionEnabled);
 	TArray<AActor*> IgnoreActors;
 
 protected:
@@ -39,8 +39,9 @@ protected:
 
 	void ExecuteGetHit(FHitResult& BoxHit);
 
-	UFUNCTION(BlueprintImplementableEvent) // implementation in blueprints, call in cpp
-		void createFields(const FVector& FieldLocation);
+	// implementation in blueprints, call in cpp
+	UFUNCTION(BlueprintImplementableEvent)
+	void createFields(const FVector& FieldLocation);
 
 private:
 	void BoxTrace(FHitResult& BoxHit);

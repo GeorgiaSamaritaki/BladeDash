@@ -24,7 +24,7 @@ public:
 	/** </AActor> */
 
 	/** <IHitInterface> */
-	void GetHit_Implementation(const FVector& ImpactPoint) override;
+	void GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter) override;
 	/** </IHitInterface> */
 
 protected:

@@ -20,6 +20,7 @@ class SLASHWORLD_API IHitInterface {
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintNativeEvent) // its a pure virtual function
-		void GetHit(const FVector& ImpactPoint);
+	// its a pure virtual function
+	UFUNCTION(BlueprintNativeEvent)
+	void GetHit(const FVector& ImpactPoint, AActor* Hitter);
 };

@@ -62,6 +62,13 @@ void AWeapon::AttachMeshToSocket(USceneComponent* InParent, const FName& InSocke
 	ItemMesh->AttachToComponent(InParent, TransformRules, InSocketName);
 }
 
+void AWeapon::SetCollision(ECollisionEnabled::Type CollisionEnabled) {
+	if (GetWeaponBox()) {
+		GetWeaponBox()->SetCollisionEnabled(CollisionEnabled);
+		IgnoreActors.Empty();
+	}
+}
+
 void AWeapon::OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
 
@@ -89,7 +96,7 @@ void AWeapon::ExecuteGetHit(FHitResult& BoxHit) {
 	//Call hit interface
 	IHitInterface* HitInterface = Cast<IHitInterface>(BoxHit.GetActor());
 	if (HitInterface) {
-		HitInterface->Execute_GetHit(BoxHit.GetActor(), BoxHit.ImpactPoint);
+		HitInterface->Execute_GetHit(BoxHit.GetActor(), BoxHit.ImpactPoint, this->GetOwner());
 	}
 }
 

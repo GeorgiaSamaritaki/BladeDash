@@ -59,10 +59,9 @@ void AEnemy::Destroyed() {
 	if (EquippedWeapon) EquippedWeapon->Destroy();
 }
 
-void AEnemy::GetHit_Implementation(const FVector& ImpactPoint) {
-	if (IsDead()) return;
-	Super::GetHit_Implementation(ImpactPoint);
-	ShowHealthBar();
+void AEnemy::GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter) {
+	Super::GetHit_Implementation(ImpactPoint, Hitter);
+	if (!IsDead()) ShowHealthBar();
 	ClearPatrolTimer();
 }
 
