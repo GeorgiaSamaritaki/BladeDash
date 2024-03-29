@@ -60,14 +60,10 @@ void AEnemy::Destroyed() {
 }
 
 void AEnemy::GetHit_Implementation(const FVector& ImpactPoint) {
-
+	if (IsDead()) return;
+	Super::GetHit_Implementation(ImpactPoint);
 	ShowHealthBar();
-
-	if (IsAlive()) DirectionalHitReact(ImpactPoint);
-	else Die();
-
-	PlayHitSound(ImpactPoint);
-	SpawnHitParticles(ImpactPoint);
+	ClearPatrolTimer();
 }
 
 void AEnemy::BeginPlay() {
@@ -86,11 +82,12 @@ void AEnemy::Die() {
 	HideHealthBar();
 	SetLifeSpan(DeathLifeSpan);
 	GetCharacterMovement()->bOrientRotationToMovement = false;
+	SetWeaponCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void AEnemy::Attack() {
-	EnemyState = EEnemyState::EES_Engaged;
 	Super::Attack();
+	EnemyState = EEnemyState::EES_Engaged;
 	PlayAttackMontage();
 }
 
@@ -218,7 +215,7 @@ void AEnemy::MoveToTarget(AActor* Target) {
 
 	FAIMoveRequest MoveRequest;
 	MoveRequest.SetGoalActor(Target);
-	MoveRequest.SetAcceptanceRadius(50.f);
+	MoveRequest.SetAcceptanceRadius(30.f);
 
 	EnemyController->MoveTo(MoveRequest);
 }

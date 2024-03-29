@@ -21,10 +21,8 @@ public:
 
 protected:
 
-	/** <AActor> */
 	virtual void BeginPlay() override;
-	/** </AActor> */
-
+	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;
 	virtual void Attack();
 	virtual void Die();
 	virtual void HandleDamage(float DamageAmount);

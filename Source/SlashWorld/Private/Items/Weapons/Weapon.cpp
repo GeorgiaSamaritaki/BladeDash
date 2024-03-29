@@ -71,7 +71,6 @@ void AWeapon::OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 	BoxTrace(BoxHit);
 
 	if (BoxHit.GetActor()) {
-
 		if (ActorIsSameType(BoxHit.GetActor())) return;
 
 		//Apply Damage
@@ -100,6 +99,7 @@ void AWeapon::BoxTrace(FHitResult& BoxHit) {
 
 	TArray<AActor*> ActorsToIgnore;
 	ActorsToIgnore.Add(this);
+	ActorsToIgnore.AddUnique(GetOwner());
 
 
 	for (AActor* Actor : IgnoreActors) {
