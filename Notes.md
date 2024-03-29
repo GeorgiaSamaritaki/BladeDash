@@ -221,3 +221,6 @@ Origin change for weapons + sockets
 Randomly select Montage section by setting an array  with the sections
 ![Montage Sections CPP](Screenshots/MontageSectionsCpp.png)
 ![Montage Sections Details Panel](Screenshots/MontageSectionsDetails.png)
+
+# 197
+- Motion warping for enemy attacks and dynamic combat

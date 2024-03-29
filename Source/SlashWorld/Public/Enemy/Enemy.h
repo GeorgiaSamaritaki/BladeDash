@@ -62,6 +62,7 @@ private:
 	void CheckPatrolTarget();
 	AActor* ChoosePatrolTarget();
 	void StartPatrolling();
+	void StartPatrolTimer();
 	void ClearPatrolTimer();
 	void PatrolTimerFinished();
 	void MoveToTarget(AActor* Target);
@@ -79,6 +80,7 @@ private:
 	bool IsOutsideCombatRadious();
 	bool IsInsideCombatRadious();
 	bool IsOutsideAttackRadious();
+	bool IsInsideAttackRadious();
 
 	UPROPERTY(VisibleAnywhere)
 	UHealthBarComponent* HealthBarWidget;
@@ -88,8 +90,6 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AWeapon> WeaponClass;
-	UPROPERTY()
-	AActor* CombatTarget;
 
 	UPROPERTY(EditAnywhere)
 	double CombatRadius = 500.f;
@@ -117,6 +117,12 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "AI Navigation")
 	float PatrolWaitMax = 10.f;
+
+	UPROPERTY(EditAnywhere, Category = "AI Navigation")
+	float PatrolWaitViewAngle = 90.f;
+
+	UPROPERTY(EditAnywhere, Category = "AI Navigation")
+	float DefaultViewAngle = 45.f;
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	float PatrolSpeed = 125.f;

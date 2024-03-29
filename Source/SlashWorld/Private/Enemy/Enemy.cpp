@@ -29,7 +29,7 @@ AEnemy::AEnemy() {
 	/* Sensing */
 	SensingPawn = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensing"));
 	SensingPawn->SightRadius = 4000.f;
-	SensingPawn->SetPeripheralVisionAngle(45.f);
+	SensingPawn->SetPeripheralVisionAngle(DefaultViewAngle);
 
 	EnemyState = EEnemyState::EES_Patrolling;
 }
@@ -50,7 +50,12 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 
 	HandleDamage(DamageAmount);
 	CombatTarget = EventInstigator->GetPawn();
-	ChaseTarget();
+
+	if (IsInsideAttackRadious()) {
+		EnemyState = EEnemyState::EES_Attacking;
+	} else if (IsOutsideCombatRadious()) {
+		ChaseTarget();
+	}
 
 	return DamageAmount;
 }
@@ -63,6 +68,9 @@ void AEnemy::GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter) {
 	Super::GetHit_Implementation(ImpactPoint, Hitter);
 	if (!IsDead()) ShowHealthBar();
 	ClearPatrolTimer();
+	ClearAttackTimer();
+
+	StopAttackMontage();
 }
 
 void AEnemy::BeginPlay() {
@@ -181,8 +189,7 @@ void AEnemy::CheckPatrolTarget() {
 	if (InTargetRange(PatrolTarget, PatrolRadius)) {
 
 		PatrolTarget = ChoosePatrolTarget();
-		const float WaitTime = FMath::RandRange(PatrolWaitMin, PatrolWaitMax);
-		GetWorldTimerManager().SetTimer(PatrolTimer, this, &AEnemy::PatrolTimerFinished, WaitTime);
+		StartPatrolTimer();
 	}
 }
 
@@ -201,9 +208,17 @@ void AEnemy::StartPatrolling() {
 	MoveToTarget(PatrolTarget);
 }
 
+void AEnemy::StartPatrolTimer() {
+	const float WaitTime = FMath::RandRange(PatrolWaitMin, PatrolWaitMax);
+	GetWorldTimerManager().SetTimer(PatrolTimer, this, &AEnemy::PatrolTimerFinished, WaitTime);
+	SensingPawn->SetPeripheralVisionAngle(PatrolWaitViewAngle);
+}
+
 void AEnemy::ClearPatrolTimer() {
 	GetWorldTimerManager().ClearTimer(PatrolTimer);
+	SensingPawn->SetPeripheralVisionAngle(DefaultViewAngle);
 }
+
 
 void AEnemy::PatrolTimerFinished() {
 	MoveToTarget(PatrolTarget);
@@ -282,4 +297,8 @@ bool AEnemy::IsInsideCombatRadious() {
 
 bool AEnemy::IsOutsideAttackRadious() {
 	return !InTargetRange(CombatTarget, AttackRadius);
+}
+
+bool AEnemy::IsInsideAttackRadious() {
+	return InTargetRange(CombatTarget, AttackRadius);
 }
