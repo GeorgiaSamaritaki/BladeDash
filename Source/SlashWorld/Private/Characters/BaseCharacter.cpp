@@ -23,17 +23,22 @@ void ABaseCharacter::GetHit_Implementation(const FVector& ImpactPoint, AActor* H
 	else
 		Die();
 
+	SetWeaponCollisionEnabled(ECollisionEnabled::NoCollision);
 	PlayHitSound(ImpactPoint);
 	SpawnHitParticles(ImpactPoint);
-	SetWeaponCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void ABaseCharacter::Attack() {
+	if (CombatTarget && CombatTarget->ActorHasTag(FName("Dead"))) {
+		CombatTarget = nullptr;
+	}
 }
 
 void ABaseCharacter::Die() {
+	Tags.Add(FName("Dead"));
 	PlayDeathMontage();
 	DisableMeshCollision();
+	SetWeaponCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void ABaseCharacter::DirectionalHitReact(const FVector& ImpactPoint) {
