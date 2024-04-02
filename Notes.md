@@ -224,3 +224,7 @@ Randomly select Montage section by setting an array  with the sections
 
 # 197
 - Motion warping for enemy attacks and dynamic combat
+
+# 201 - 203
+- Level Blueprint
+- HUD overlay for character attributes

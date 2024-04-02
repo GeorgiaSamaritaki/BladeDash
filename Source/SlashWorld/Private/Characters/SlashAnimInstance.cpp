@@ -28,6 +28,8 @@ void USlashAnimInstance::NativeUpdateAnimation(float DeltaTime) {
 
 		//Update character States in animations to use in the blueprints
 		CharacterState = SlashCharacter->GetCharacterState();
+		ActionState = SlashCharacter->GetActionState();
+		DeathPose = SlashCharacter->GetDeathPose();
 	}
 }
 

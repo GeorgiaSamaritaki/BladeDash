@@ -32,6 +32,8 @@ void ABaseCharacter::Attack() {
 }
 
 void ABaseCharacter::Die() {
+	PlayDeathMontage();
+	DisableMeshCollision();
 }
 
 void ABaseCharacter::DirectionalHitReact(const FVector& ImpactPoint) {
@@ -93,7 +95,12 @@ int32 ABaseCharacter::PlayAttackMontage() {
 }
 
 int32 ABaseCharacter::PlayDeathMontage() {
-	return PlayRandomMontageSection(DeathMontage, DeathMontageSections);
+	const int32 Selection = PlayRandomMontageSection(DeathMontage, DeathMontageSections);
+	TEnumAsByte<EDeathPose> Pose(Selection);
+	if (Pose < EDeathPose::EDP_MAX) {
+		DeathPose = Pose;
+	}
+	return Selection;
 }
 
 void ABaseCharacter::DisableCapsule() {
@@ -165,6 +172,10 @@ bool ABaseCharacter::CanAttack() {
 
 bool ABaseCharacter::IsAlive() {
 	return Attributes && Attributes->isAlive();
+}
+
+void ABaseCharacter::DisableMeshCollision() {
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void ABaseCharacter::AttackEnd() {
