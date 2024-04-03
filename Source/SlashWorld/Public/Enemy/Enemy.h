@@ -45,6 +45,7 @@ protected:
 
 private:
 	void SpawnDefaultWeapon();
+	void SpawnSoul();
 	void InitialiseEnemy();
 
 	/** AI Behavior */
@@ -136,4 +137,7 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = "Combat")
 	float DeathLifeSpan = 8.f;
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	TSubclassOf<class ASoul> SoulClass;
 };
