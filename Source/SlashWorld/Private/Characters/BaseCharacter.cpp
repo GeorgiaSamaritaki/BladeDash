@@ -17,7 +17,7 @@ void ABaseCharacter::BeginPlay() {
 }
 
 void ABaseCharacter::GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter) {
-	UE_LOG(LogTemp, Warning, TEXT("GetHitCalled"));
+
 	if (IsAlive() && Hitter)
 		DirectionalHitReact(Hitter->K2_GetActorLocation());
 	else

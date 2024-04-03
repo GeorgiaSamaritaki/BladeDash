@@ -100,8 +100,18 @@ float ASlashCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Damage
 void ASlashCharacter::GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter) {
 	Super::GetHit_Implementation(ImpactPoint, Hitter);
 
-	if (Attributes && Attributes->GetHealthPercent() > 0.f)
+	if (Attributes && Attributes->GetHealthPercent() > 0.f) {
+		UE_LOG(LogTemp, Warning, TEXT("hit reaction"));
 		ActionState = EActionState::EAS_HitReaction;
+	}
+}
+
+void ASlashCharacter::SetOverlappingItem(AItem* Item) {
+	OverlappingItem = Item;
+}
+
+void ASlashCharacter::AddSouls(ASoul* Soul) {
+	UE_LOG(LogTemp, Warning, TEXT("AASlashCharacter::AddSouls"));
 }
 
 void ASlashCharacter::Move(const FInputActionValue& Value) {
@@ -236,6 +246,7 @@ void ASlashCharacter::FinishEquipping() {
 }
 
 void ASlashCharacter::HitReactEnd() {
+	UE_LOG(LogTemp, Warning, TEXT("end hit react"));
 	ActionState = EActionState::EAS_Unoccupied;
 }
 

@@ -19,8 +19,6 @@ protected:
 		const FHitResult& SweepResult) override;
 
 private:
-	UPROPERTY(EditAnywhere, Category = Sounds)
-	USoundBase* PickupSound;
 
 	//Value of the item
 	UPROPERTY(EditAnywhere, Category = "Treasure Properties")
