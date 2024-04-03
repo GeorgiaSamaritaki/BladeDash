@@ -46,6 +46,7 @@ protected:
 	/** Montage */
 	virtual int32 PlayAttackMontage();
 	virtual	int32 PlayDeathMontage();
+	virtual	void PlayDodgeMontage();
 	virtual void PlayHitReactMontage(const FName& SectionName);
 	void StopAttackMontage();
 
@@ -57,6 +58,9 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	virtual void AttackEnd();
+
+	UFUNCTION(BlueprintCallable)
+	virtual void DodgeEnd();
 
 	UFUNCTION(BlueprintCallable)
 	void SetWeaponCollisionEnabled(ECollisionEnabled::Type CollisionEnabled);
@@ -82,6 +86,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	UAnimMontage* DeathMontage;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
+	UAnimMontage* DodgeMontage;
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TArray<FName> AttackMontageSections;

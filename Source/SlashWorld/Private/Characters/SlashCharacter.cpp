@@ -1,4 +1,4 @@
-
+﻿
 #include "Characters/SlashCharacter.h"
 
 #include "Components/InputComponent.h"
@@ -20,7 +20,7 @@
 #include "Items/Treasure.h"
 
 ASlashCharacter::ASlashCharacter() {
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
@@ -57,6 +57,13 @@ ASlashCharacter::ASlashCharacter() {
 	Eyebrows = CreateDefaultSubobject<UGroomComponent>(TEXT("Eyebrows"));
 	Eyebrows->SetupAttachment(GetMesh());
 	Eyebrows->AttachmentName = FString("head");
+}
+
+void ASlashCharacter::Tick(float DeltaTime) {
+	if (Attributes) {
+		Attributes->RegenStamina(DeltaTime);
+		SlashOverlay->SetStaminaBarPercent(Attributes->GetStaminaPercent());
+	}
 }
 
 void ASlashCharacter::BeginPlay() {
@@ -177,6 +184,15 @@ void ASlashCharacter::Jump() {
 	}
 }
 void ASlashCharacter::Dodge() {
+	if (IsOccupied() || !HasEnoughStamina()) return;
+
+	ActionState = EActionState::EAS_Dodge;
+	PlayDodgeMontage();
+
+	if (Attributes && SlashOverlay) {
+		Attributes->UseStamina(Attributes->GetDodgeCost());
+		SlashOverlay->SetStaminaBarPercent(Attributes->GetStaminaPercent());
+	}
 }
 
 void ASlashCharacter::Attack() {
@@ -196,6 +212,12 @@ void ASlashCharacter::EquipWeapon(AWeapon* Weapon) {
 }
 
 void ASlashCharacter::AttackEnd() {
+	Super::AttackEnd();
+	ActionState = EActionState::EAS_Unoccupied;
+}
+
+void ASlashCharacter::DodgeEnd() {
+	Super::DodgeEnd();
 	ActionState = EActionState::EAS_Unoccupied;
 }
 
@@ -284,6 +306,14 @@ void ASlashCharacter::UpdateHUDHealth() {
 	}
 }
 
+bool ASlashCharacter::IsOccupied() {
+	return ActionState != EActionState::EAS_Unoccupied;
+}
+
 bool ASlashCharacter::IsUnoccupied() {
 	return ActionState == EActionState::EAS_Unoccupied;
+}
+
+bool ASlashCharacter::HasEnoughStamina() {
+	return Attributes && Attributes->GetStamina() > Attributes->GetDodgeCost();
 }

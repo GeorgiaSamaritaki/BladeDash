@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
 #include "BaseCharacter.h"
@@ -24,6 +24,7 @@ class SLASHWORLD_API ASlashCharacter : public ABaseCharacter, public IPickupInte
 
 public:
 	ASlashCharacter();
+	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 	void GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter) override;
@@ -45,6 +46,7 @@ protected:
 	/** Combat */
 	void EquipWeapon(AWeapon* Weapon);
 	virtual void AttackEnd() override;
+	virtual void DodgeEnd() override;
 	virtual bool CanAttack() override;
 	bool CanDisarm();
 	bool CanArm();
@@ -90,7 +92,9 @@ private:
 
 	void InitialiseSlashOverlay();
 	void UpdateHUDHealth();
+	bool IsOccupied();
 	bool IsUnoccupied();
+	bool HasEnoughStamina();
 
 	/** Character combonents */
 	UPROPERTY(VisibleAnywhere)
