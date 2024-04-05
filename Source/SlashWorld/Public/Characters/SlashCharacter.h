@@ -53,7 +53,7 @@ protected:
 	void Arm();
 	void Disarm();
 	void PlayEquipMontage(const FName& SectionName);
-	virtual void Die() override;
+	virtual void Die_Implementation() override;
 
 	UFUNCTION(BlueprintCallable)
 	void AttachWeaponToBack();

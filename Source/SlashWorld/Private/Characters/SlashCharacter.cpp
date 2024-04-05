@@ -186,7 +186,9 @@ void ASlashCharacter::Jump() {
 void ASlashCharacter::Dodge() {
 	if (IsOccupied() || !HasEnoughStamina()) return;
 
+	GetMesh()->SetGenerateOverlapEvents(false);
 	ActionState = EActionState::EAS_Dodge;
+
 	PlayDodgeMontage();
 
 	if (Attributes && SlashOverlay) {
@@ -218,6 +220,7 @@ void ASlashCharacter::AttackEnd() {
 
 void ASlashCharacter::DodgeEnd() {
 	Super::DodgeEnd();
+	GetMesh()->SetGenerateOverlapEvents(true);
 	ActionState = EActionState::EAS_Unoccupied;
 }
 
@@ -230,8 +233,8 @@ void ASlashCharacter::PlayEquipMontage(const FName& SectionName) {
 	}
 }
 
-void ASlashCharacter::Die() {
-	Super::Die();
+void ASlashCharacter::Die_Implementation() {
+	Super::Die_Implementation();
 
 	ActionState = EActionState::EAS_Dead;
 }

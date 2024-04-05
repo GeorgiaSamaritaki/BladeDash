@@ -231,3 +231,30 @@ Randomly select Montage section by setting an array  with the sections
 
 # 210
 - Material editing for niagara effects
+
+# 220
+Animation Blueprint template
+
+# 226
+To create a new enemy:
+- Child Anim BP
+- IdleWalkRun Blendspace
+- Dead Poses
+- Death Section Names Array
+- Weapon Socket to the skeleton
+- Weapon Class 
+	- Adjust collision box
+	- adjust box trace extent
+- Adjust Combat/Navigation Settings
+- Attack Animation
+	- Root Motion
+- Attack Montage
+	- Enable/Disable Box Collision
+	- AttackEnd
+	- Motion Warping
+- Attack Section Names Array
+- Hit React Montage
+	- From Front, Left, Back, Right
+- Deeath Montage
+- Attributes 
+	- Health, Soul
