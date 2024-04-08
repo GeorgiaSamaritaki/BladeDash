@@ -139,9 +139,12 @@ void AEnemy::SpawnDefaultWeapon() {
 void AEnemy::SpawnSoul() {
 	UWorld* World = GetWorld();
 	if (World && SoulClass && Attributes) {
-		ASoul* SpawnedSoul = World->SpawnActor<ASoul>(SoulClass, GetActorLocation(), GetActorRotation());
-		if (SpawnedSoul)
+		const FVector SpawnLocation = GetActorLocation() + FVector(0.f, 0.f, 125.f);
+		ASoul* SpawnedSoul = World->SpawnActor<ASoul>(SoulClass, SpawnLocation, GetActorRotation());
+		if (SpawnedSoul) {
 			SpawnedSoul->SetSouls(Attributes->GetSouls());
+			SpawnedSoul->SetOwner(this);
+		}
 	}
 }
 

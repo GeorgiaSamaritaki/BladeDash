@@ -40,7 +40,7 @@ protected:
 	bool IsAlive();
 	void DisableMeshCollision();
 
-	UPROPERTY(BlueprintReadOnly, Category = "Combat")
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Combat")
 	AActor* CombatTarget;
 
 	UPROPERTY(EditAnywhere, Category = "Combat")

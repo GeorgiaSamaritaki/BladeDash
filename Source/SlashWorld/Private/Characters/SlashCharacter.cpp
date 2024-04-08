@@ -109,6 +109,7 @@ float ASlashCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Damage
 void ASlashCharacter::GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter) {
 	Super::GetHit_Implementation(ImpactPoint, Hitter);
 
+	CombatTarget = Hitter;
 	if (Attributes && Attributes->GetHealthPercent() > 0.f) {
 		UE_LOG(LogTemp, Warning, TEXT("hit reaction"));
 		ActionState = EActionState::EAS_HitReaction;
@@ -169,6 +170,8 @@ void ASlashCharacter::EKeyPressed() {
 	AWeapon* OverlappingWeapon = Cast<AWeapon>(OverlappingItem);
 
 	if (OverlappingWeapon) {
+		if (EquippedWeapon)
+			EquippedWeapon->Destroy();
 
 		EquipWeapon(OverlappingWeapon);
 
@@ -199,6 +202,9 @@ void ASlashCharacter::Dodge() {
 
 void ASlashCharacter::Attack() {
 	Super::Attack();
+
+	if (CombatTarget && CombatTarget->ActorHasTag(FName("Dead")))
+		CombatTarget = nullptr;
 
 	if (CanAttack()) {
 		PlayAttackMontage();
