@@ -41,6 +41,14 @@ void UAttributeComponent::AddGold(int32 AmountOfGold) {
 	Gold += AmountOfGold;
 }
 
+void UAttributeComponent::AddHealth(int32 HP) {
+	Health = FMath::Clamp(HP + Health, 0.f, MaxHealth);
+}
+
+void UAttributeComponent::AddStamina(int32 StaminaPoints) {
+	Stamina = FMath::Clamp(StaminaPoints + Stamina, 0.f, MaxStamina);
+}
+
 void UAttributeComponent::RegenStamina(float DeltaTime) {
 	Stamina = FMath::Clamp(Stamina + StaminaRegenRate * DeltaTime, 0.f, MaxStamina);
 }

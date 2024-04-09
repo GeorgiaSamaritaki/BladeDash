@@ -35,7 +35,7 @@ private:
 	// To gain accesss to the blueprints of the treasure class
 	// Wrapper enforces restrictions
 	UPROPERTY(EditAnywhere, Category = "Breakable Properties");
-	TArray<TSubclassOf<class ATreasure>> TreasureClasses;
+	TArray<TSubclassOf<class AItem>> TreasureClasses;
 
 	bool bBroken = false;
 };

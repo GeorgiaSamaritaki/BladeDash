@@ -18,6 +18,7 @@
 #include "HUD/SlashOverlay.h"
 #include "Items/Soul.h"
 #include "Items/Treasure.h"
+#include "Items/PowerUp.h"
 
 ASlashCharacter::ASlashCharacter() {
 	PrimaryActorTick.bCanEverTick = true;
@@ -57,13 +58,6 @@ ASlashCharacter::ASlashCharacter() {
 	Eyebrows = CreateDefaultSubobject<UGroomComponent>(TEXT("Eyebrows"));
 	Eyebrows->SetupAttachment(GetMesh());
 	Eyebrows->AttachmentName = FString("head");
-}
-
-void ASlashCharacter::Tick(float DeltaTime) {
-	if (Attributes) {
-		Attributes->RegenStamina(DeltaTime);
-		SlashOverlay->SetStaminaBarPercent(Attributes->GetStaminaPercent());
-	}
 }
 
 void ASlashCharacter::BeginPlay() {
@@ -131,6 +125,15 @@ void ASlashCharacter::AddGold(ATreasure* Treasure) {
 	if (Attributes && SlashOverlay) {
 		Attributes->AddGold(Treasure->GetGold());
 		SlashOverlay->SetGold(Attributes->GetGold());
+	}
+}
+
+void ASlashCharacter::AddHealth(APowerUp* PowerUp) {
+	if (Attributes && SlashOverlay) {
+		Attributes->AddHealth(PowerUp->GetHealth());
+		//Attributes->AddStamina(PowerUp->GetStamina());
+		SlashOverlay->SetHealthBarPercent(Attributes->GetHealthPercent());
+		//SlashOverlay->SetStaminaBarPercent(Attributes->GetStaminaPercent());
 	}
 }
 
@@ -291,6 +294,13 @@ void ASlashCharacter::FinishEquipping() {
 void ASlashCharacter::HitReactEnd() {
 	UE_LOG(LogTemp, Warning, TEXT("end hit react"));
 	ActionState = EActionState::EAS_Unoccupied;
+}
+
+void ASlashCharacter::StaminaRegen(float DeltaTime) {
+	if (Attributes) {
+		Attributes->RegenStamina(DeltaTime);
+		SlashOverlay->SetStaminaBarPercent(Attributes->GetStaminaPercent());
+	}
 }
 
 void ASlashCharacter::InitialiseSlashOverlay() {

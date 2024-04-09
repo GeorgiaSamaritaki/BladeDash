@@ -17,6 +17,7 @@ class ASoul;
 class UAnimMontage;
 class USlashOverlay;
 class ATreasure;
+class APowerUp;
 
 UCLASS()
 class SLASHWORLD_API ASlashCharacter : public ABaseCharacter, public IPickupInterface {
@@ -24,13 +25,13 @@ class SLASHWORLD_API ASlashCharacter : public ABaseCharacter, public IPickupInte
 
 public:
 	ASlashCharacter();
-	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 	void GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter) override;
 	virtual void SetOverlappingItem(AItem* Item) override;
 	virtual void AddSouls(ASoul* Soul) override;
 	virtual void AddGold(ATreasure* Treasure) override;
+	virtual void AddHealth(APowerUp* PowerUp) override;
 
 protected:
 	virtual void BeginPlay() override;
@@ -66,6 +67,9 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void HitReactEnd();
+
+	UFUNCTION(BlueprintCallable)
+	void StaminaRegen(float DeltaTime);
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	UInputMappingContext* SlashContext;

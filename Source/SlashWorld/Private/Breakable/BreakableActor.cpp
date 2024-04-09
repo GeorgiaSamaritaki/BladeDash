@@ -38,7 +38,7 @@ void ABreakableActor::OnBreak(const FChaosBreakEvent& BreakEvent) {
 
 		// Spawn a random treasure
 		const int32 Selection = FMath::RandRange(0, TreasureClasses.Num() - 1);
-		GetWorld()->SpawnActor<ATreasure>(TreasureClasses[Selection], Location, GetActorRotation());
+		GetWorld()->SpawnActor<AItem>(TreasureClasses[Selection], Location, GetActorRotation());
 
 	}
 }

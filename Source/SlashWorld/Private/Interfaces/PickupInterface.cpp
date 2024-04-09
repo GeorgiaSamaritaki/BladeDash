@@ -13,3 +13,6 @@ void IPickupInterface::AddSouls(ASoul* Soul) {
 
 void IPickupInterface::AddGold(ATreasure* Treasure) {
 }
+
+void IPickupInterface::AddHealth(APowerUp* PowerUp) {
+}
