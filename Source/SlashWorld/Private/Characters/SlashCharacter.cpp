@@ -137,6 +137,13 @@ void ASlashCharacter::AddHealth(APowerUp* PowerUp) {
 	}
 }
 
+bool ASlashCharacter::InTargetRange(AActor* Target, double Radius) {
+	if (Target == nullptr) return false;
+
+	const double DistanceToTarget = (Target->GetActorLocation() - GetActorLocation()).Size();
+	return DistanceToTarget <= Radius;
+}
+
 void ASlashCharacter::Move(const FInputActionValue& Value) {
 	if (ActionState != EActionState::EAS_Unoccupied) return;
 

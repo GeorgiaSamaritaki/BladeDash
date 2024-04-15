@@ -21,23 +21,23 @@ protected:
 private:
 	// Current Health
 	UPROPERTY(EditAnywhere, Category = "Actor Attributes")
-	float Health;
+	float Health = 100;
 
 	UPROPERTY(EditAnywhere, Category = "Actor Attributes")
-	float MaxHealth;
+	float MaxHealth = 100;
 
 	// Current Stamina
 	UPROPERTY(EditAnywhere, Category = "Actor Attributes")
-	float Stamina;
+	float Stamina = 100;
 
 	UPROPERTY(EditAnywhere, Category = "Actor Attributes")
-	float MaxStamina;
+	float MaxStamina = 100;
 
 	UPROPERTY(EditAnywhere, Category = "Actor Attributes")
-	int32 Gold;
+	int32 Gold = 0;
 
 	UPROPERTY(EditAnywhere, Category = "Actor Attributes")
-	int32 Souls;
+	int32 Souls = 0;
 
 	UPROPERTY(EditAnywhere, Category = "Actor Attributes")
 	float DodgeCost = 14.f;

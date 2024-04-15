@@ -33,6 +33,9 @@ public:
 	virtual void AddGold(ATreasure* Treasure) override;
 	virtual void AddHealth(APowerUp* PowerUp) override;
 
+	UFUNCTION(BlueprintCallable)
+	bool InTargetRange(AActor* Target, double Radius);
+
 protected:
 	virtual void BeginPlay() override;
 
